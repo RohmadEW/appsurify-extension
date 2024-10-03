@@ -1,0 +1,31 @@
+{
+  "recommendations": [
+    "bradlc.vscode-tailwindcss",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "aaron-bond.better-comments",
+    "mikestead.dotenv",
+    "rangav.vscode-thunder-client",
+    "ms-vsliveshare.vsliveshare",
+    "vivaxy.vscode-conventional-commits",
+    "quicktype.quicktype",
+    "42crunch.vscode-openapi",
+    "formulahendry.auto-rename-tag",
+    "eamodio.gitlens",
+    "christian-kohler.path-intellisense",
+    "foxundermoon.shell-format",
+    "jock.svg",
+    "redhat.vscode-yaml",
+    "dotjoshjohnson.xml",
+    "wallabyjs.console-ninja",
+    "gitlab.gitlab-workflow",
+    "yoavbls.pretty-ts-errors",
+    "ambar.bundle-size",
+    "mrmlnc.vscode-duplicate",
+    "editorconfig.editorconfig",
+    "donjayamanne.githistory",
+    "marp-team.marp-vscode",
+    "pflannery.vscode-versionlens",
+    "tyriar.luna-paint"
+  ]
+}
