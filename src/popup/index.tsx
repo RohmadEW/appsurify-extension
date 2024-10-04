@@ -11,7 +11,7 @@ function IndexPopup() {
 
   return (
     <JotaiProvider>
-      <div className="plasmo-flex plasmo-items-center plasmo-justify-center plasmo-h-[560px] plasmo-w-[400px]">
+      <div className="plasmo-h-[560px] plasmo-w-[400px]">
         {routerPage === ROUTE_PAGE.LOGIN && <Login />}
       </div>
     </JotaiProvider>
