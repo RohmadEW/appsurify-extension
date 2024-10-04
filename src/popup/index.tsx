@@ -1,6 +1,7 @@
 import { useState } from "react"
 
 import { Login } from "~popup/components/login"
+import CreateNewProject from "~popup/components/project/new_project"
 import { Register } from "~popup/components/register"
 import { ROUTE_PAGE } from "~popup/types/route"
 
@@ -17,6 +18,9 @@ function IndexPopup() {
         )}
         {routerPage === ROUTE_PAGE.REGISTER && (
           <Register setRouterPage={setRouterPage} />
+        )}
+        {routerPage === ROUTE_PAGE.CREATE_NEW_PROJECT && (
+          <CreateNewProject setRouterPage={setRouterPage} />
         )}
       </div>
       <div className="plasmo-h-[40px] plasmo-border-t plasmo-flex plasmo-items-center plasmo-justify-center plasmo-gap-4">

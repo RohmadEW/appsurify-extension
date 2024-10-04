@@ -13,6 +13,10 @@ export const Login = ({ setRouterPage }: LoginProps) => {
     setRouterPage(ROUTE_PAGE.REGISTER)
   }
 
+  const routeToCreateNewProject = () => {
+    setRouterPage(ROUTE_PAGE.CREATE_NEW_PROJECT)
+  }
+
   return (
     <div className="plasmo-pt-6 plasmo-pb-4 plasmo-px-12">
       <img
@@ -61,12 +65,22 @@ export const Login = ({ setRouterPage }: LoginProps) => {
               Login
             </button>
             <div>
-              Don't have an account?{" "}
-              <button
-                className="plasmo-text-blue-500"
-                onClick={routeToRegister}>
-                Sign up
-              </button>
+              <div>
+                Don't have an account?{" "}
+                <button
+                  className="plasmo-text-blue-500"
+                  onClick={routeToRegister}>
+                  Sign up
+                </button>
+              </div>
+              <div>
+                Do you want to create new project?{" "}
+                <button
+                  className="plasmo-text-blue-500"
+                  onClick={routeToCreateNewProject}>
+                  Create Now
+                </button>
+              </div>
             </div>
           </div>
         </div>
