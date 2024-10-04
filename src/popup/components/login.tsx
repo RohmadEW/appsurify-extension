@@ -1,16 +1,15 @@
+import { useRoute } from "~popup/context/route"
 import { ROUTE_PAGE } from "~popup/types/route"
 
 import googleIcon from "/assets/google-icon.png"
 import icon from "/assets/icon.png"
 import microsoftIcon from "/assets/microsoft-icon.png"
 
-interface LoginProps {
-  setRouterPage: (page: ROUTE_PAGE) => void
-}
+export const Login = () => {
+  const { setRoute } = useRoute()
 
-export const Login = ({ setRouterPage }: LoginProps) => {
   const routeToRegister = () => {
-    setRouterPage(ROUTE_PAGE.REGISTER)
+    setRoute(ROUTE_PAGE.REGISTER)
   }
 
   return (

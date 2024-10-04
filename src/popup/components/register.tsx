@@ -1,14 +1,13 @@
+import { useRoute } from "~popup/context/route"
 import { ROUTE_PAGE } from "~popup/types/route"
 
 import icon from "/assets/icon.png"
 
-interface RegisterProps {
-  setRouterPage: (page: ROUTE_PAGE) => void
-}
+export const Register = () => {
+  const { setRoute } = useRoute()
 
-export const Register = ({ setRouterPage }: RegisterProps) => {
-  const handleLogin = () => {
-    setRouterPage(ROUTE_PAGE.LOGIN)
+  const routeToLogin = () => {
+    setRoute(ROUTE_PAGE.LOGIN)
   }
 
   return (
@@ -57,7 +56,7 @@ export const Register = ({ setRouterPage }: RegisterProps) => {
           </button>
           <button
             className="plasmo-btn plasmo-btn-ghost plasmo-w-full"
-            onClick={handleLogin}>
+            onClick={routeToLogin}>
             Login
           </button>
         </div>
