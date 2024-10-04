@@ -15,7 +15,9 @@ function IndexPopup() {
         {routerPage === ROUTE_PAGE.LOGIN && (
           <Login setRouterPage={setRouterPage} />
         )}
-        {routerPage === ROUTE_PAGE.REGISTER && <Register />}
+        {routerPage === ROUTE_PAGE.REGISTER && (
+          <Register setRouterPage={setRouterPage} />
+        )}
       </div>
       <div className="plasmo-h-[40px] plasmo-border-t plasmo-flex plasmo-items-center plasmo-justify-center plasmo-gap-4">
         <div>Terms of Service</div>
