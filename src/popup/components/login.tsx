@@ -1,8 +1,18 @@
+import { ROUTE_PAGE } from "~popup/types/route"
+
 import googleIcon from "/assets/google-icon.png"
 import icon from "/assets/icon.png"
 import microsoftIcon from "/assets/microsoft-icon.png"
 
-export const Login = () => {
+interface LoginProps {
+  setRouterPage: (page: ROUTE_PAGE) => void
+}
+
+export const Login = ({ setRouterPage }: LoginProps) => {
+  const routeToRegister = () => {
+    setRouterPage(ROUTE_PAGE.REGISTER)
+  }
+
   return (
     <div className="plasmo-pt-6 plasmo-pb-4 plasmo-px-12">
       <img
@@ -52,9 +62,11 @@ export const Login = () => {
             </button>
             <div>
               Don't have an account?{" "}
-              <a href="#" className="plasmo-text-blue-500">
+              <button
+                className="plasmo-text-blue-500"
+                onClick={routeToRegister}>
                 Sign up
-              </a>
+              </button>
             </div>
           </div>
         </div>
