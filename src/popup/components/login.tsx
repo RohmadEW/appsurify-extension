@@ -4,7 +4,7 @@ import microsoftIcon from "/assets/microsoft-icon.png"
 
 export const Login = () => {
   return (
-    <div className="plasmo-py-6 plasmo-px-12">
+    <div className="plasmo-pt-6 plasmo-pb-4 plasmo-px-12">
       <img
         src={icon}
         className="plasmo-w-[80px] plasmo-h-[80px] plasmo-mx-auto"
