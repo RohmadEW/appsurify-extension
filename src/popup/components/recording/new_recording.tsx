@@ -52,6 +52,8 @@ export default function CreateNewRecording() {
     )
 
     setRouterPage(ROUTE_PAGE.RECORDING)
+
+    window.close()
   }
 
   if (projects.length === 0) {

@@ -20,6 +20,7 @@ export default function Recording() {
         console.log(response)
       }
     )
+    window.close()
   }
 
   return (
@@ -31,11 +32,14 @@ export default function Recording() {
       <div className="plasmo-text-3xl plasmo-mt-4 plasmo-text-center">
         Recording...
       </div>
-      <div className="plasmo-mockup-code plasmo-w-full plasmo-h-[280px] plasmo-overflow-x-auto plasmo-overflow-y-auto plasmo-mt-8">
+      <div className="plasmo-mt-8 plasmo-text-gray-500 plasmo-italic">
+        Last recording data:
+      </div>
+      <div className="plasmo-mockup-code plasmo-w-full plasmo-h-[280px] plasmo-overflow-x-auto plasmo-overflow-y-auto plasmo-mt-2">
         <pre className="plasmo-mx-4">{JSON.stringify(rrwebData, null, 2)}</pre>
       </div>
       <button
-        className="plasmo-btn plasmo-btn-outline plasmo-w-full plasmo-mt-4"
+        className="plasmo-btn plasmo-btn-outline plasmo-btn-primary plasmo-w-full plasmo-mt-4"
         onClick={handleRecording}>
         Start Recording
       </button>

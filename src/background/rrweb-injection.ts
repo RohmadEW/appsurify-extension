@@ -650,12 +650,23 @@ export default function rrwebInjection() {
     }
   })()
 
+  let snapshots = []
+  let sendToServer = null
+
   rrwebRecord({
     emit: async (event) => {
-      chrome.runtime.sendMessage({
-        action: "recording-event-message",
-        payload: event
-      })
+      snapshots.push(event)
+
+      sendToServer = setTimeout(() => {
+        if (snapshots.length > 0) {
+          chrome.runtime.sendMessage({
+            action: "recording-event-message",
+            payload: event
+          })
+
+          snapshots = []
+        }
+      }, 1000)
     }
   })
 }

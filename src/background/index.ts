@@ -23,7 +23,7 @@ async function popupStorage() {
       console.log(StorageKey.PROJECT_RECORDING, c)
     },
     [StorageKey.RRWEB_DATA]: (c) => {
-      console.log(StorageKey.RRWEB_DATA, c)
+      console.log(new Date(), StorageKey.RRWEB_DATA, c)
     }
   })
 }
@@ -50,11 +50,16 @@ chrome.runtime.onMessage.addListener((message) => {
       })
 
     case MessageChromeAction.RECORDING_EVENT:
-      console.log("Recording event: ", message.payload)
       storage.set(StorageKey.RRWEB_DATA, message.payload)
+      break
+
+    case MessageChromeAction.CLOSE_POPUP:
+      chrome.action.setPopup({ popup: "" })
       break
 
     default:
       break
   }
+
+  return true
 })
