@@ -1,5 +1,6 @@
 import { ROUTE_PAGE } from "~popup/types/route"
 
+import githubIcon from "/assets/github-icon.png"
 import googleIcon from "/assets/google-icon.png"
 import icon from "/assets/icon.png"
 import microsoftIcon from "/assets/microsoft-icon.png"
@@ -31,6 +32,10 @@ export const Login = ({ setRouterPage }: LoginProps) => {
         <button className="plasmo-btn plasmo-btn-outline plasmo-w-full">
           <img src={microsoftIcon} className="plasmo-w-8 plasmo-h-8" />
           Sign in with Microsoft
+        </button>
+        <button className="plasmo-btn plasmo-btn-outline plasmo-w-full">
+          <img src={githubIcon} className="plasmo-w-8 plasmo-h-8" />
+          Sign in with Github
         </button>
       </div>
       <form action="" className="plasmo-mt-8">

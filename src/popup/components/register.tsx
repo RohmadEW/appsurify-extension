@@ -1,6 +1,9 @@
 import { ROUTE_PAGE } from "~popup/types/route"
 
+import githubIcon from "/assets/github-icon.png"
+import googleIcon from "/assets/google-icon.png"
 import icon from "/assets/icon.png"
+import microsoftIcon from "/assets/microsoft-icon.png"
 
 interface RegisterProps {
   setRouterPage: (page: ROUTE_PAGE) => void
@@ -19,6 +22,20 @@ export const Register = ({ setRouterPage }: RegisterProps) => {
       />
       <div className="plasmo-text-3xl plasmo-mt-4 plasmo-text-center">
         Sign Up
+      </div>
+      <div className="plasmo-mt-6 plasmo-space-y-2 plasmo-px-8">
+        <button className="plasmo-btn plasmo-btn-outline plasmo-w-full">
+          <img src={googleIcon} className="plasmo-w-8 plasmo-h-8" />
+          <div>Sign Up with Google</div>
+        </button>
+        <button className="plasmo-btn plasmo-btn-outline plasmo-w-full">
+          <img src={microsoftIcon} className="plasmo-w-8 plasmo-h-8" />
+          Sign Up with Microsoft
+        </button>
+        <button className="plasmo-btn plasmo-btn-outline plasmo-w-full">
+          <img src={githubIcon} className="plasmo-w-8 plasmo-h-8" />
+          <div>Sign Up with Github</div>
+        </button>
       </div>
       <form action="" className="plasmo-mt-6">
         <div className="plasmo-space-y-6">
