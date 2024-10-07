@@ -5,3 +5,16 @@ export interface ProjectRecording {
   testsuite: string
   testrun: string
 }
+
+export interface RrwebData {
+  events: Array<{
+    type: string
+    data: any
+    timestamp: number
+  }>
+  url: string
+  viewport: {
+    width: number
+    height: number
+  }
+}
