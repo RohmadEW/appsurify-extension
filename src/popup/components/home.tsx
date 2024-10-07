@@ -15,7 +15,7 @@ export default function Home() {
         className="plasmo-w-[80px] plasmo-h-[80px] plasmo-mx-auto"
       />
       <div className="plasmo-text-3xl plasmo-mt-4 plasmo-text-center">
-        List Projects
+        Welcome, John Doe!
       </div>
       <div className="plasmo-mt-6 plasmo-space-y-2">
         <button
@@ -23,7 +23,9 @@ export default function Home() {
           onClick={() => setRouterPage(ROUTE_PAGE.CREATE_NEW_PROJECT)}>
           Start new project
         </button>
-        <button className="plasmo-btn plasmo-btn-success plasmo-btn-outline plasmo-w-full">
+        <button
+          className="plasmo-btn plasmo-btn-success plasmo-btn-outline plasmo-w-full"
+          onClick={() => setRouterPage(ROUTE_PAGE.CREATE_NEW_RECORDING)}>
           Start new recording
         </button>
       </div>

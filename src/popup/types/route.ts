@@ -3,5 +3,6 @@ export enum ROUTE_PAGE {
   REGISTER = "register",
   HOME = "home",
   CREATE_NEW_PROJECT = "create-new-project",
+  CREATE_NEW_RECORDING = "create-new-recording",
   RECORDING = "recording"
 }
