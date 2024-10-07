@@ -1,5 +1,6 @@
 import { useStorage } from "@plasmohq/storage/hook"
 
+import Home from "~popup/components/home"
 import { Login } from "~popup/components/login"
 import CreateNewProject from "~popup/components/project/new_project"
 import Recording from "~popup/components/recording"
@@ -29,6 +30,7 @@ function IndexPopup() {
           <CreateNewProject setRouterPage={setRouterPage} />
         )}
         {routerPage === ROUTE_PAGE.RECORDING && <Recording />}
+        {routerPage === ROUTE_PAGE.HOME && <Home />}
       </div>
       <div className="plasmo-h-[40px] plasmo-border-t plasmo-flex plasmo-items-center plasmo-justify-center plasmo-gap-4">
         <div>Terms of Service</div>

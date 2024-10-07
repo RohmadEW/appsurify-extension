@@ -10,10 +10,6 @@ interface RegisterProps {
 }
 
 export const Register = ({ setRouterPage }: RegisterProps) => {
-  const handleLogin = () => {
-    setRouterPage(ROUTE_PAGE.LOGIN)
-  }
-
   return (
     <div className="plasmo-pt-6 plasmo-pb-4 plasmo-px-12">
       <img
@@ -24,15 +20,21 @@ export const Register = ({ setRouterPage }: RegisterProps) => {
         Sign Up
       </div>
       <div className="plasmo-mt-6 plasmo-space-y-2 plasmo-px-8">
-        <button className="plasmo-btn plasmo-btn-outline plasmo-w-full">
+        <button
+          className="plasmo-btn plasmo-btn-outline plasmo-w-full"
+          onClick={() => setRouterPage(ROUTE_PAGE.HOME)}>
           <img src={googleIcon} className="plasmo-w-8 plasmo-h-8" />
           <div>Sign Up with Google</div>
         </button>
-        <button className="plasmo-btn plasmo-btn-outline plasmo-w-full">
+        <button
+          className="plasmo-btn plasmo-btn-outline plasmo-w-full"
+          onClick={() => setRouterPage(ROUTE_PAGE.HOME)}>
           <img src={microsoftIcon} className="plasmo-w-8 plasmo-h-8" />
           Sign Up with Microsoft
         </button>
-        <button className="plasmo-btn plasmo-btn-outline plasmo-w-full">
+        <button
+          className="plasmo-btn plasmo-btn-outline plasmo-w-full"
+          onClick={() => setRouterPage(ROUTE_PAGE.HOME)}>
           <img src={githubIcon} className="plasmo-w-8 plasmo-h-8" />
           <div>Sign Up with Github</div>
         </button>
@@ -69,12 +71,14 @@ export const Register = ({ setRouterPage }: RegisterProps) => {
             className="plasmo-input plasmo-input-bordered plasmo-w-full"
             placeholder="Re-enter Password *"
           />
-          <button className="plasmo-btn plasmo-btn-primary plasmo-w-full">
+          <button
+            className="plasmo-btn plasmo-btn-primary plasmo-w-full"
+            onClick={() => setRouterPage(ROUTE_PAGE.HOME)}>
             Sign Up
           </button>
           <button
             className="plasmo-btn plasmo-btn-ghost plasmo-w-full"
-            onClick={handleLogin}>
+            onClick={() => setRouterPage(ROUTE_PAGE.LOGIN)}>
             Login
           </button>
         </div>
