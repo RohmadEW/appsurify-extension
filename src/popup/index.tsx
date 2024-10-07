@@ -20,15 +20,9 @@ function IndexPopup() {
   return (
     <div className="plasmo-overflow-y-auto plasmo-h-[600px] plasmo-w-[400px]">
       <div className="plasmo-min-h-[560px]">
-        {routerPage === ROUTE_PAGE.LOGIN && (
-          <Login setRouterPage={setRouterPage} />
-        )}
-        {routerPage === ROUTE_PAGE.REGISTER && (
-          <Register setRouterPage={setRouterPage} />
-        )}
-        {routerPage === ROUTE_PAGE.CREATE_NEW_PROJECT && (
-          <CreateNewProject setRouterPage={setRouterPage} />
-        )}
+        {routerPage === ROUTE_PAGE.LOGIN && <Login />}
+        {routerPage === ROUTE_PAGE.REGISTER && <Register />}
+        {routerPage === ROUTE_PAGE.CREATE_NEW_PROJECT && <CreateNewProject />}
         {routerPage === ROUTE_PAGE.RECORDING && <Recording />}
         {routerPage === ROUTE_PAGE.HOME && <Home />}
       </div>

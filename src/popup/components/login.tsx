@@ -1,15 +1,16 @@
+import { useStorage } from "@plasmohq/storage/hook"
+
 import { ROUTE_PAGE } from "~popup/types/route"
+import { StorageKey } from "~types/storage"
 
 import githubIcon from "/assets/github-icon.png"
 import googleIcon from "/assets/google-icon.png"
 import icon from "/assets/icon.png"
 import microsoftIcon from "/assets/microsoft-icon.png"
 
-interface LoginProps {
-  setRouterPage: (page: ROUTE_PAGE) => void
-}
+export const Login = () => {
+  const [, setRouterPage] = useStorage<ROUTE_PAGE>(StorageKey.ROUTE_PAGE)
 
-export const Login = ({ setRouterPage }: LoginProps) => {
   return (
     <div className="plasmo-pt-6 plasmo-pb-4 plasmo-px-12">
       <img

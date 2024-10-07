@@ -1,17 +1,12 @@
+import { useStorage } from "@plasmohq/storage/hook"
+
 import { ROUTE_PAGE } from "~popup/types/route"
+import { StorageKey } from "~types/storage"
 
 import icon from "/assets/icon.png"
 
-interface CreateNewProjectProps {
-  setRouterPage: (page: ROUTE_PAGE) => void
-}
-
-export default function CreateNewProject({
-  setRouterPage
-}: CreateNewProjectProps) {
-  const handleLogin = () => {
-    setRouterPage(ROUTE_PAGE.LOGIN)
-  }
+export default function CreateNewProject() {
+  const [, setRouterPage] = useStorage<ROUTE_PAGE>(StorageKey.ROUTE_PAGE)
 
   return (
     <div className="plasmo-pt-6 plasmo-pb-4 plasmo-px-12">
@@ -39,8 +34,8 @@ export default function CreateNewProject({
           </button>
           <button
             className="plasmo-btn plasmo-btn-ghost plasmo-w-full"
-            onClick={handleLogin}>
-            Login
+            onClick={() => setRouterPage(ROUTE_PAGE.HOME)}>
+            Back
           </button>
         </div>
       </form>
