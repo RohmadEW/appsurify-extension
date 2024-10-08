@@ -1,6 +1,5 @@
 import { Storage } from "@plasmohq/storage"
 
-import rrwebInjection from "~background/rrweb-injection"
 import { MessageChromeAction } from "~types/message-chrome"
 import { StorageKey } from "~types/storage"
 
@@ -24,6 +23,9 @@ async function popupStorage() {
     },
     [StorageKey.RRWEB_DATA]: (c) => {
       console.log(new Date(), StorageKey.RRWEB_DATA, c)
+    },
+    [StorageKey.RECORDING_STATUS]: (c) => {
+      console.log(StorageKey.RECORDING_STATUS, c)
     }
   })
 }
@@ -34,25 +36,8 @@ const main = async () => {
 
 main()
 
-chrome.runtime.onMessage.addListener((message) => {
+chrome.runtime.onMessage.addListener(async (message) => {
   switch (message.action) {
-    case MessageChromeAction.START_RECORDING:
-      console.log("Start recording: background script")
-      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        if (tabs[0].id !== undefined) {
-          chrome.scripting.executeScript({
-            target: { tabId: tabs[0].id },
-            func: rrwebInjection
-          })
-        } else {
-          console.error("No active tab found")
-        }
-      })
-
-    case MessageChromeAction.RECORDING_EVENT:
-      storage.set(StorageKey.RRWEB_DATA, message.payload)
-      break
-
     case MessageChromeAction.CLOSE_POPUP:
       chrome.action.setPopup({ popup: "" })
       break
