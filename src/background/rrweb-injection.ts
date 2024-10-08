@@ -655,6 +655,7 @@ export default function rrwebInjection() {
 
   rrwebRecord({
     emit: async (event) => {
+      console.log(event)
       snapshots.push(event)
 
       sendToServer = setTimeout(() => {
