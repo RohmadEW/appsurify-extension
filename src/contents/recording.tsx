@@ -24,12 +24,10 @@ export default function Recording() {
     if (run) {
       rrwebRef.current = rrweb.record({
         emit(event) {
-          console.log("Event", event)
           snapshots.push(event)
 
           if (timeoutSnapshot === null) {
             timeoutSnapshot = setTimeout(() => {
-              console.log("Saving Snapshots", snapshots)
               setRrwebData((prev) => [...prev, ...snapshots])
               timeoutSnapshot = null
               snapshots = []
@@ -44,7 +42,6 @@ export default function Recording() {
         }
       })
     } else {
-      console.log("Stop Recording")
       rrwebRef.current?.()
     }
   }
