@@ -35,6 +35,12 @@ export default function Recording() {
               snapshots = []
             }, 1000)
           }
+        },
+        sampling: {
+          mousemove: true,
+          mouseInteraction: true,
+          scroll: 150,
+          media: 300
         }
       })
     } else {
