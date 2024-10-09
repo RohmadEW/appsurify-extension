@@ -9,14 +9,19 @@ import icon from "/assets/icon.png"
 
 export default function Recording() {
   const [, setRouterPage] = useStorage<ROUTE_PAGE>(StorageKey.ROUTE_PAGE)
-  const [rrwebData] = useStorage<eventWithTime[]>(StorageKey.RRWEB_DATA)
+  const [rrwebData, setRrwebData] = useStorage<eventWithTime[]>(
+    StorageKey.RRWEB_DATA
+  )
   const [recordingStatus, setRecordingStatus] = useStorage<RecordingStatus>(
     StorageKey.RECORDING_STATUS
   )
 
   const handleRecording = (status: RecordingStatus) => {
     setRecordingStatus(status)
-    window.close()
+
+    if (status === RecordingStatus.RECORDING) {
+      window.close()
+    }
   }
 
   return (
@@ -38,11 +43,23 @@ export default function Recording() {
         {rrwebData?.length} events recorded
       </div>
       {recordingStatus === RecordingStatus.STOPPED && (
-        <button
-          className="plasmo-btn plasmo-btn-outline plasmo-btn-primary plasmo-w-full plasmo-mt-4"
-          onClick={() => handleRecording(RecordingStatus.RECORDING)}>
-          Start Recording
-        </button>
+        <>
+          <button
+            className="plasmo-btn plasmo-btn-outline plasmo-btn-primary plasmo-w-full plasmo-mt-4"
+            onClick={() => handleRecording(RecordingStatus.RECORDING)}>
+            Start Recording
+          </button>
+          <button
+            className="plasmo-btn plasmo-btn-outline plasmo-btn-primary plasmo-w-full plasmo-mt-4"
+            onClick={() => setRouterPage(ROUTE_PAGE.REPLY_RECORDING)}>
+            Reply Recording
+          </button>
+          <button
+            className="plasmo-btn plasmo-btn-outline plasmo-btn-primary plasmo-w-full plasmo-mt-4"
+            onClick={() => setRrwebData([])}>
+            Clear Recording
+          </button>
+        </>
       )}
       {recordingStatus === RecordingStatus.RECORDING && (
         <button

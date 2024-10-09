@@ -1,5 +1,5 @@
 import type { eventWithTime } from "@rrweb/types"
-import { useEffect, useState } from "react"
+import { useEffect, useRef } from "react"
 import * as rrweb from "rrweb"
 
 import { useStorage } from "@plasmohq/storage/hook"
@@ -15,14 +15,14 @@ export default function Recording() {
     (value) => value ?? []
   )
 
-  const [rrwebState, setRrwebState] = useState(null)
+  const rrwebRef = useRef(null)
 
   const recording = (run: boolean) => {
     let snapshots = []
     let timeoutSnapshot: NodeJS.Timeout | null = null
 
     if (run) {
-      const rrwebRecord = rrweb.record({
+      rrwebRef.current = rrweb.record({
         emit(event) {
           console.log("Event", event)
           snapshots.push(event)
@@ -37,9 +37,9 @@ export default function Recording() {
           }
         }
       })
-      // setRrwebState(rrwebRecord)
     } else {
-      rrwebState?.()
+      console.log("Stop Recording")
+      rrwebRef.current?.()
     }
   }
 

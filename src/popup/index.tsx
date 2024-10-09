@@ -5,6 +5,7 @@ import { Login } from "~popup/components/login"
 import CreateNewProject from "~popup/components/project/new_project"
 import CreateNewRecording from "~popup/components/recording/new_recording"
 import Recording from "~popup/components/recording/recording"
+import ReplyRecording from "~popup/components/recording/reply"
 import { Register } from "~popup/components/register"
 import { ROUTE_PAGE } from "~popup/types/route"
 
@@ -28,6 +29,7 @@ function IndexPopup() {
           <CreateNewRecording />
         )}
         {routerPage === ROUTE_PAGE.RECORDING && <Recording />}
+        {routerPage === ROUTE_PAGE.REPLY_RECORDING && <ReplyRecording />}
         {routerPage === ROUTE_PAGE.HOME && <Home />}
       </div>
       <div className="plasmo-h-[40px] plasmo-border-t plasmo-flex plasmo-items-center plasmo-justify-center plasmo-gap-4">
