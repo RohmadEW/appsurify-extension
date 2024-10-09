@@ -49,11 +49,11 @@ export default function Recording() {
             onClick={() => handleRecording(RecordingStatus.RECORDING)}>
             Start Recording
           </button>
-          <button
+          {/* <button
             className="plasmo-btn plasmo-btn-outline plasmo-btn-primary plasmo-w-full plasmo-mt-4"
             onClick={() => setRouterPage(ROUTE_PAGE.REPLY_RECORDING)}>
             Reply Recording
-          </button>
+          </button> */}
           <button
             className="plasmo-btn plasmo-btn-outline plasmo-btn-primary plasmo-w-full plasmo-mt-4"
             onClick={() => setRrwebData([])}>
