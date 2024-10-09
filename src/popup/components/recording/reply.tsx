@@ -1,4 +1,5 @@
 import type { eventWithTime } from "@rrweb/types"
+import rrwebPlayer from "rrweb-player"
 
 import "rrweb-player/dist/style.css"
 
@@ -12,18 +13,25 @@ import { StorageKey } from "~types/storage"
 import icon from "/assets/icon.png"
 
 export default function ReplyRecording() {
-  const ref = useRef<HTMLDivElement>(null)
+  const ref = useRef(null)
   const [, setRouterPage] = useStorage<ROUTE_PAGE>(StorageKey.ROUTE_PAGE)
-  const [rrwebData] = useStorage<eventWithTime[]>(StorageKey.RRWEB_DATA)
+  const [rrwebData] = useStorage<eventWithTime[]>(
+    StorageKey.RRWEB_DATA,
+    (value) => value ?? []
+  )
 
   useEffect(() => {
-    if (ref.current !== null) {
-      // new rrwebPlayer({
-      //   target: ref.current,
-      //   props: {
-      //     events: []
-      //   }
-      // })
+    if (rrwebData.length > 0) {
+      ref.current = new rrwebPlayer({
+        target: document.getElementById("replay-container"),
+        props: {
+          events: [],
+          skipInactive: true,
+          width: 100,
+          height: 100,
+          autoPlay: true
+        }
+      })
     }
   }, [])
 
@@ -36,7 +44,7 @@ export default function ReplyRecording() {
       <div className="plasmo-text-3xl plasmo-mt-4 plasmo-text-center">
         Reply Recording
       </div>
-      <div ref={ref}></div>
+      <div id="replay-container" style={{ width: "100%", height: "300px" }} />
       <button
         className="plasmo-btn plasmo-btn-outline plasmo-w-full plasmo-mt-8"
         onClick={() => setRouterPage(ROUTE_PAGE.RECORDING)}>
