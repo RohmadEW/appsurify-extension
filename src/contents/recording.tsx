@@ -1,54 +1,51 @@
-import { useEffect } from "react"
+import type { eventWithTime } from "@rrweb/types"
+import { useEffect, useState } from "react"
+import * as rrweb from "rrweb"
 
 import { useStorage } from "@plasmohq/storage/hook"
 
-import { rrwebRecord } from "~libs/rrweb"
-import type { RrwebData } from "~popup/types/recording"
 import { RecordingStatus, StorageKey } from "~types/storage"
 
 export default function Recording() {
   const [recordingStatus] = useStorage<RecordingStatus>(
     StorageKey.RECORDING_STATUS
   )
-
-  if (recordingStatus === RecordingStatus.RECORDING) {
-    return <StartRecording />
-  }
-
-  return null
-}
-
-const StartRecording = () => {
-  const [, setRrwebData] = useStorage<RrwebData[]>(
+  const [, setRrwebData] = useStorage<eventWithTime[]>(
     StorageKey.RRWEB_DATA,
     (value) => value ?? []
   )
 
-  const recording = () => {
-    let snapshots: RrwebData[] = []
-    let timeout: NodeJS.Timeout | null = null
+  const [rrwebState, setRrwebState] = useState(null)
 
-    rrwebRecord({
-      emit: async (event) => {
-        console.log("Event: ", event)
-        snapshots.push(event)
+  const recording = (run: boolean) => {
+    let snapshots = []
+    let timeoutSnapshot: NodeJS.Timeout | null = null
 
-        if (timeout === null) {
-          timeout = setTimeout(() => {
-            console.log("Sending to background: ", snapshots)
-            setRrwebData((prev) => [...prev, ...snapshots])
+    if (run) {
+      const rrwebRecord = rrweb.record({
+        emit(event) {
+          console.log("Event", event)
+          snapshots.push(event)
 
-            snapshots = []
-            timeout = null
-          }, 1000)
+          if (timeoutSnapshot === null) {
+            timeoutSnapshot = setTimeout(() => {
+              console.log("Saving Snapshots", snapshots)
+              setRrwebData((prev) => [...prev, ...snapshots])
+              timeoutSnapshot = null
+              snapshots = []
+            }, 1000)
+          }
         }
-      }
-    })
+      })
+      // setRrwebState(rrwebRecord)
+    } else {
+      rrwebState?.()
+    }
   }
 
   useEffect(() => {
-    recording()
-  }, [])
+    recording(recordingStatus === RecordingStatus.RECORDING)
+  }, [recordingStatus])
 
   return null
 }

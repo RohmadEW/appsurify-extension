@@ -28,6 +28,8 @@ async function popupStorage() {
       console.log(StorageKey.RECORDING_STATUS, c)
     }
   })
+
+  // storage.set(StorageKey.RRWEB_DATA, [])
 }
 
 const main = async () => {

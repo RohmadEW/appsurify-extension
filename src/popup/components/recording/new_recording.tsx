@@ -5,8 +5,7 @@ import { useStorage } from "@plasmohq/storage/hook"
 import type { Project } from "~popup/types/project"
 import type { ProjectRecording } from "~popup/types/recording"
 import { ROUTE_PAGE } from "~popup/types/route"
-import { MessageChromeAction } from "~types/message-chrome"
-import { StorageKey } from "~types/storage"
+import { RecordingStatus, StorageKey } from "~types/storage"
 
 import icon from "/assets/icon.png"
 
@@ -18,6 +17,9 @@ export default function CreateNewRecording() {
   const [projects] = useStorage<Project[]>(
     StorageKey.PROJECTS,
     (value) => value ?? []
+  )
+  const [, setRecordingStatus] = useStorage<RecordingStatus>(
+    StorageKey.RECORDING_STATUS
   )
 
   const [project, setProject] = useState<Project>()
@@ -37,19 +39,7 @@ export default function CreateNewRecording() {
       testrun
     })
 
-    chrome.runtime.sendMessage(
-      {
-        action: MessageChromeAction.START_RECORDING,
-        payload: {
-          project,
-          testsuite,
-          testrun
-        }
-      },
-      (response) => {
-        console.log(response)
-      }
-    )
+    setRecordingStatus(RecordingStatus.RECORDING)
 
     setRouterPage(ROUTE_PAGE.RECORDING)
 

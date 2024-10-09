@@ -1,6 +1,7 @@
+import type { eventWithTime } from "@rrweb/types"
+
 import { useStorage } from "@plasmohq/storage/hook"
 
-import type { RrwebData } from "~popup/types/recording"
 import { ROUTE_PAGE } from "~popup/types/route"
 import { RecordingStatus, StorageKey } from "~types/storage"
 
@@ -8,7 +9,7 @@ import icon from "/assets/icon.png"
 
 export default function Recording() {
   const [, setRouterPage] = useStorage<ROUTE_PAGE>(StorageKey.ROUTE_PAGE)
-  const [rrwebData] = useStorage<RrwebData[]>(StorageKey.RRWEB_DATA)
+  const [rrwebData] = useStorage<eventWithTime[]>(StorageKey.RRWEB_DATA)
   const [recordingStatus, setRecordingStatus] = useStorage<RecordingStatus>(
     StorageKey.RECORDING_STATUS
   )
@@ -33,11 +34,8 @@ export default function Recording() {
           {recordingStatus?.toUpperCase()}
         </div>
       </div>
-      <div className="plasmo-mt-4 plasmo-text-gray-500 plasmo-italic">
+      <div className="plasmo-mt-4 plasmo-text-gray-500 plasmo-italic plasmo-text-center">
         {rrwebData?.length} events recorded
-      </div>
-      <div className="plasmo-mockup-code plasmo-w-full plasmo-h-[280px] plasmo-overflow-x-auto plasmo-overflow-y-auto plasmo-mt-2">
-        <pre className="plasmo-mx-4">{JSON.stringify(rrwebData, null, 2)}</pre>
       </div>
       {recordingStatus === RecordingStatus.STOPPED && (
         <button
