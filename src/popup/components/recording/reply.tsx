@@ -27,8 +27,8 @@ export default function ReplyRecording() {
           events: rrwebData,
           autoPlay: true,
           skipInactive: true,
-          width: 400,
-          height: 300
+          width: 500,
+          height: 450
         }
       })
     }
@@ -44,21 +44,18 @@ export default function ReplyRecording() {
 
   return (
     <div className="plasmo-pt-6 plasmo-pb-4 plasmo-px-12">
-      <img
-        src={icon}
-        className="plasmo-w-[80px] plasmo-h-[80px] plasmo-mx-auto"
-      />
-      <div className="plasmo-text-3xl plasmo-mt-4 plasmo-text-center">
-        Reply Recording
-      </div>
-      <div className="plasmo-text-center">
-        There are {rrwebData.length} events recorded
+      <div className="plasmo-flex plasmo-items-center plasmo-gap-2">
+        <img src={icon} className="plasmo-w-[80px] plasmo-h-[80px]" />
+        <div>
+          <div className="plasmo-text-3xl">Reply Recording</div>
+          <div>There are {rrwebData.length} events recorded</div>
+        </div>
       </div>
       <div className="plasmo-mt-4 plasmo-border plasmo-border-gray-100 plasmo-shadow-md plasmo-overflow-x-auto">
-        <div id="replay-container" style={{ width: "100%", height: "300px" }} />
+        <div id="replay-container" style={{ width: "100%", height: "450px" }} />
       </div>
       <button
-        className="plasmo-btn plasmo-btn-outline plasmo-w-full plasmo-mt-8"
+        className="plasmo-btn plasmo-btn-outline plasmo-w-full plasmo-mt-8 plasmo-mb-4"
         onClick={() => setRouterPage(ROUTE_PAGE.RECORDING)}>
         Back
       </button>

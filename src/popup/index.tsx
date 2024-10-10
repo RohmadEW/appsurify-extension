@@ -20,7 +20,8 @@ function IndexPopup() {
   )
 
   return (
-    <div className="plasmo-overflow-y-auto plasmo-h-[600px] plasmo-w-[400px]">
+    <div
+      className={`plasmo-overflow-y-auto ${routerPage === ROUTE_PAGE.REPLY_RECORDING ? "plasmo-h-[800px] plasmo-w-[600px]" : "plasmo-h-[600px] plasmo-w-[400px]"}`}>
       <div className="plasmo-min-h-[560px]">
         {routerPage === ROUTE_PAGE.LOGIN && <Login />}
         {routerPage === ROUTE_PAGE.REGISTER && <Register />}
