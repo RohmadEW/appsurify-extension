@@ -39,21 +39,21 @@ export default function Recording() {
           {recordingStatus?.toUpperCase()}
         </div>
       </div>
-      <div className="plasmo-mt-4 plasmo-text-gray-500 plasmo-italic plasmo-text-center">
-        {rrwebData?.length} events recorded
-      </div>
       {recordingStatus === RecordingStatus.STOPPED && (
         <>
+          <div className="plasmo-mt-4 plasmo-text-gray-500 plasmo-italic plasmo-text-center">
+            {rrwebData?.length} events recorded
+          </div>
           <button
             className="plasmo-btn plasmo-btn-outline plasmo-btn-primary plasmo-w-full plasmo-mt-4"
             onClick={() => handleRecording(RecordingStatus.RECORDING)}>
             Start Recording
           </button>
-          {/* <button
+          <button
             className="plasmo-btn plasmo-btn-outline plasmo-btn-primary plasmo-w-full plasmo-mt-4"
             onClick={() => setRouterPage(ROUTE_PAGE.REPLY_RECORDING)}>
             Reply Recording
-          </button> */}
+          </button>
           <button
             className="plasmo-btn plasmo-btn-outline plasmo-btn-primary plasmo-w-full plasmo-mt-4"
             onClick={() => setRrwebData([])}>
@@ -62,11 +62,21 @@ export default function Recording() {
         </>
       )}
       {recordingStatus === RecordingStatus.RECORDING && (
-        <button
-          className="plasmo-btn plasmo-btn-outline plasmo-btn-error plasmo-w-full plasmo-mt-4"
-          onClick={() => handleRecording(RecordingStatus.STOPPED)}>
-          Stop Recording
-        </button>
+        <>
+          <div className="plasmo-mt-4 plasmo-text-gray-500 plasmo-italic plasmo-text-left">
+            {rrwebData?.length} events recorded. This is the last data:
+          </div>
+          <div className="plasmo-mockup-code plasmo-mt-2 ">
+            <pre>
+              {JSON.stringify(rrwebData[rrwebData.length - 1], null, 2)}
+            </pre>
+          </div>
+          <button
+            className="plasmo-btn plasmo-btn-outline plasmo-btn-error plasmo-w-full plasmo-mt-4"
+            onClick={() => handleRecording(RecordingStatus.STOPPED)}>
+            Stop Recording
+          </button>
+        </>
       )}
       <button
         className="plasmo-btn plasmo-btn-outline plasmo-w-full plasmo-mt-8"
