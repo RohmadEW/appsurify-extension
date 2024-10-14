@@ -24,6 +24,13 @@ export default function Recording() {
     if (run) {
       rrwebRef.current = rrweb.record({
         emit(event) {
+          if (
+            event.type === rrweb.EventType.IncrementalSnapshot &&
+            event.data.source === rrweb.IncrementalSource.MouseMove
+          )
+            return
+
+          console.log("event", event)
           snapshots.push(event)
 
           if (timeoutSnapshot === null) {
