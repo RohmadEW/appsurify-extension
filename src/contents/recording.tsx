@@ -30,7 +30,7 @@ export default function Recording() {
           )
             return
 
-          console.log("event", event)
+          // console.log("event", event)
           snapshots.push(event)
 
           if (timeoutSnapshot === null) {
