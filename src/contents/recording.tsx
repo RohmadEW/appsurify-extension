@@ -1,4 +1,4 @@
-import type { eventWithTime } from "@rrweb/types"
+import type { eventWithTime, mouseInteractionData } from "@rrweb/types"
 import { useEffect, useRef } from "react"
 import * as rrweb from "rrweb"
 
@@ -26,11 +26,16 @@ export default function Recording() {
         emit(event) {
           if (
             event.type === rrweb.EventType.IncrementalSnapshot &&
-            event.data.source === rrweb.IncrementalSource.MouseMove
+            !(
+              (event.data.source === rrweb.IncrementalSource.MouseInteraction &&
+                [rrweb.MouseInteractions.Click].includes(
+                  (event.data as mouseInteractionData).type
+                )) ||
+              event.data.source === rrweb.IncrementalSource.Input
+            )
           )
             return
 
-          // console.log("event", event)
           snapshots.push(event)
 
           if (timeoutSnapshot === null) {
