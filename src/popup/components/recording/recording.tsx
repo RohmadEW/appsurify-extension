@@ -24,6 +24,18 @@ export default function Recording() {
     }
   }
 
+  const handleDownloadRrwebData = () => {
+    const dataStr = `data:text/json;charset=utf-8,${encodeURIComponent(
+      JSON.stringify(rrwebData)
+    )}`
+    const downloadAnchorNode = document.createElement("a")
+    downloadAnchorNode.setAttribute("href", dataStr)
+    downloadAnchorNode.setAttribute("download", "rrweb-data.json")
+    document.body.appendChild(downloadAnchorNode)
+    downloadAnchorNode.click()
+    downloadAnchorNode.remove
+  }
+
   return (
     <div className="plasmo-pt-6 plasmo-pb-4 plasmo-px-12">
       <img
@@ -49,15 +61,15 @@ export default function Recording() {
             onClick={() => handleRecording(RecordingStatus.RECORDING)}>
             Start Recording
           </button>
-          {/* <button
-            className="plasmo-btn plasmo-btn-outline plasmo-btn-primary plasmo-w-full plasmo-mt-4"
-            onClick={() => setRouterPage(ROUTE_PAGE.REPLY_RECORDING)}>
-            Reply Recording
-          </button> */}
           <button
             className="plasmo-btn plasmo-btn-outline plasmo-btn-primary plasmo-w-full plasmo-mt-4"
             onClick={() => setRrwebData([])}>
             Clear Recording
+          </button>
+          <button
+            className="plasmo-btn plasmo-btn-outline plasmo-btn-primary plasmo-w-full plasmo-mt-4"
+            onClick={handleDownloadRrwebData}>
+            Download Recording
           </button>
         </>
       )}
