@@ -1,62 +1,16 @@
-import type { eventWithTime, mouseInteractionData } from "@rrweb/types"
-import { useEffect, useRef } from "react"
-import * as rrweb from "rrweb"
+import { useEffect } from "react"
 
 import { useStorage } from "@plasmohq/storage/hook"
 
+import useRecording from "~hook/useRecording"
 import { RecordingStatus, StorageKey } from "~types/storage"
 
 export default function Recording() {
   const [recordingStatus] = useStorage<RecordingStatus>(
     StorageKey.RECORDING_STATUS
   )
-  const [, setRrwebData] = useStorage<eventWithTime[]>(
-    StorageKey.RRWEB_DATA,
-    (value) => value ?? []
-  )
 
-  const rrwebRef = useRef(null)
-
-  const recording = (run: boolean) => {
-    let snapshots = []
-    let timeoutSnapshot: NodeJS.Timeout | null = null
-
-    if (run) {
-      rrwebRef.current = rrweb.record({
-        emit(event) {
-          if (
-            event.type === rrweb.EventType.IncrementalSnapshot &&
-            !(
-              (event.data.source === rrweb.IncrementalSource.MouseInteraction &&
-                [rrweb.MouseInteractions.Click].includes(
-                  (event.data as mouseInteractionData).type
-                )) ||
-              event.data.source === rrweb.IncrementalSource.Input
-            )
-          )
-            return
-
-          snapshots.push(event)
-
-          if (timeoutSnapshot === null) {
-            timeoutSnapshot = setTimeout(() => {
-              setRrwebData((prev) => [...prev, ...snapshots])
-              timeoutSnapshot = null
-              snapshots = []
-            }, 1000)
-          }
-        },
-        sampling: {
-          mousemove: true,
-          mouseInteraction: true,
-          scroll: 150,
-          media: 300
-        }
-      })
-    } else {
-      rrwebRef.current?.()
-    }
-  }
+  const { recording } = useRecording()
 
   useEffect(() => {
     recording(recordingStatus === RecordingStatus.RECORDING)

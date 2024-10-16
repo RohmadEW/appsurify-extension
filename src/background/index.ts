@@ -6,6 +6,7 @@ import { StorageKey } from "~types/storage"
 console.log("Background script surify is running")
 
 const storage = new Storage()
+// storage.clear()
 
 async function popupStorage() {
   storage.watch({

@@ -10,7 +10,8 @@ import icon from "/assets/icon.png"
 export default function Recording() {
   const [, setRouterPage] = useStorage<ROUTE_PAGE>(StorageKey.ROUTE_PAGE)
   const [rrwebData, setRrwebData] = useStorage<eventWithTime[]>(
-    StorageKey.RRWEB_DATA
+    StorageKey.RRWEB_DATA,
+    []
   )
   const [recordingStatus, setRecordingStatus] = useStorage<RecordingStatus>(
     StorageKey.RECORDING_STATUS
@@ -34,6 +35,10 @@ export default function Recording() {
     document.body.appendChild(downloadAnchorNode)
     downloadAnchorNode.click()
     downloadAnchorNode.remove
+  }
+
+  const clearRecording = () => {
+    setRrwebData([])
   }
 
   return (
@@ -63,7 +68,7 @@ export default function Recording() {
           </button>
           <button
             className="plasmo-btn plasmo-btn-outline plasmo-btn-primary plasmo-w-full plasmo-mt-4"
-            onClick={() => setRrwebData([])}>
+            onClick={clearRecording}>
             Clear Recording
           </button>
           <button
