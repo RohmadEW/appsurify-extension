@@ -3,6 +3,7 @@ import type { eventWithTime } from "@rrweb/types"
 import { useStorage } from "@plasmohq/storage/hook"
 
 import { ROUTE_PAGE } from "~popup/types/route"
+import { MessageChromeAction } from "~types/message-chrome"
 import { RecordingStatus, StorageKey } from "~types/storage"
 
 import icon from "/assets/icon.png"
@@ -39,6 +40,10 @@ export default function Recording() {
 
   const clearRecording = () => {
     setRrwebData([])
+  }
+
+  const clearConsole = () => {
+    chrome.runtime.sendMessage({ action: MessageChromeAction.CLEAR_CONSOLE })
   }
 
   return (
@@ -95,6 +100,11 @@ export default function Recording() {
           </button>
         </>
       )}
+      <button
+        className="plasmo-btn plasmo-btn-outline plasmo-btn-error plasmo-w-full plasmo-mt-4"
+        onClick={clearConsole}>
+        Clear Console
+      </button>
       <button
         className="plasmo-btn plasmo-btn-outline plasmo-w-full plasmo-mt-8"
         onClick={() => setRouterPage(ROUTE_PAGE.HOME)}>

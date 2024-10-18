@@ -6,6 +6,7 @@ import { useStorage } from "@plasmohq/storage/hook"
 import useRecording from "~hook/useRecording"
 import { uuidv4 } from "~libs/unique"
 import type { Project } from "~popup/types/project"
+import { MessageChromeAction } from "~types/message-chrome"
 import { RecordingStatus, StorageKey } from "~types/storage"
 
 export const config: PlasmoCSConfig = {
@@ -68,6 +69,12 @@ export default function Recording() {
 
   useEffect(() => {
     upsertProject()
+
+    chrome.runtime.onMessage.addListener((message) => {
+      if (message.action === MessageChromeAction.CLEAR_CONSOLE) {
+        console.clear()
+      }
+    })
   }, [])
 
   useEffect(() => {

@@ -1,3 +1,3 @@
 export enum MessageChromeAction {
-  CLOSE_POPUP = "close-popup-message"
+  CLEAR_CONSOLE = "chrome-message-clear-console"
 }
