@@ -6,7 +6,11 @@ import { StorageKey } from "~types/storage"
 console.log("Background script surify is running")
 
 const storage = new Storage()
+const storageLocal = new Storage({
+  area: "local"
+})
 // storage.clear()
+// storageLocal.clear()
 
 async function popupStorage() {
   storage.watch({
@@ -22,15 +26,20 @@ async function popupStorage() {
     [StorageKey.PROJECT_RECORDING]: (c) => {
       console.log(StorageKey.PROJECT_RECORDING, c)
     },
-    [StorageKey.RRWEB_DATA]: (c) => {
-      console.log(new Date(), StorageKey.RRWEB_DATA, c)
-    },
     [StorageKey.RECORDING_STATUS]: (c) => {
       console.log(StorageKey.RECORDING_STATUS, c)
     }
   })
 
-  // storage.set(StorageKey.RRWEB_DATA, [])
+  storageLocal.watch({
+    [StorageKey.RRWEB_DATA]: (c) => {
+      console.log(new Date(), StorageKey.RRWEB_DATA, c)
+    }
+  })
+
+  if (!(await storageLocal.get(StorageKey.RRWEB_DATA))) {
+    await storageLocal.set(StorageKey.RRWEB_DATA, [])
+  }
 }
 
 const main = async () => {

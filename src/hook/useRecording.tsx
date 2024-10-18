@@ -2,6 +2,7 @@ import type { eventWithTime, mouseInteractionData } from "@rrweb/types"
 import { useRef } from "react"
 import * as rrweb from "rrweb"
 
+import { Storage } from "@plasmohq/storage"
 import { useStorage } from "@plasmohq/storage/hook"
 
 import type { ProjectRecording } from "~popup/types/recording"
@@ -13,10 +14,12 @@ export default function useRecording() {
   const [projectRecording, setProjectRecording] = useStorage<ProjectRecording>(
     StorageKey.PROJECT_RECORDING
   )
-  const [rrwebData, setRrwebData] = useStorage<eventWithTime[]>(
-    StorageKey.RRWEB_DATA,
-    (value) => value ?? []
-  )
+  const [rrwebData, setRrwebData] = useStorage<eventWithTime[]>({
+    key: StorageKey.RRWEB_DATA,
+    instance: new Storage({
+      area: "local"
+    })
+  })
 
   const rrwebRef = useRef(null)
 
@@ -25,8 +28,6 @@ export default function useRecording() {
     let timeoutSnapshot: NodeJS.Timeout | null = null
 
     if (run) {
-      console.log("Recording started")
-
       setRouterPage(ROUTE_PAGE.RECORDING)
 
       rrwebRef.current = rrweb.record({
@@ -61,8 +62,6 @@ export default function useRecording() {
         }
       })
     } else {
-      console.log("Recording stopped")
-
       rrwebRef.current?.()
     }
   }

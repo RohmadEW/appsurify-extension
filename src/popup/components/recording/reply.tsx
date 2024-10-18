@@ -5,6 +5,7 @@ import "rrweb-player/dist/style.css"
 
 import { useEffect } from "react"
 
+import { Storage } from "@plasmohq/storage"
 import { useStorage } from "@plasmohq/storage/hook"
 
 import { ROUTE_PAGE } from "~popup/types/route"
@@ -14,10 +15,12 @@ import icon from "/assets/icon.png"
 
 export default function ReplyRecording() {
   const [, setRouterPage] = useStorage<ROUTE_PAGE>(StorageKey.ROUTE_PAGE)
-  const [rrwebData] = useStorage<eventWithTime[]>(
-    StorageKey.RRWEB_DATA,
-    (value) => value ?? []
-  )
+  const [rrwebData, setRrwebData] = useStorage<eventWithTime[]>({
+    key: StorageKey.RRWEB_DATA,
+    instance: new Storage({
+      area: "local"
+    })
+  })
 
   const reply = () => {
     if (rrwebData.length > 0) {
