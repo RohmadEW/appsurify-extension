@@ -1,5 +1,10 @@
+import { useState } from "react"
+import { toast } from "react-toastify"
+
 import { useStorage } from "@plasmohq/storage/hook"
 
+import type { PostLoginArgs } from "~api/postLogin"
+import { useLogin } from "~hook/useLogin"
 import { ROUTE_PAGE } from "~popup/types/route"
 import { StorageKey } from "~types/storage"
 
@@ -10,6 +15,28 @@ import microsoftIcon from "/assets/microsoft-icon.png"
 
 export const Login = () => {
   const [, setRouterPage] = useStorage<ROUTE_PAGE>(StorageKey.ROUTE_PAGE)
+
+  const [form, setForm] = useState<PostLoginArgs>({
+    username: "admin",
+    email: "admin@gmail.com",
+    password: "admin12345"
+  })
+  const { mutate: login, isPending } = useLogin()
+
+  const handleLogin = (event: React.FormEvent) => {
+    event.preventDefault()
+
+    if (form.username === "" || form.email === "" || form.password === "") {
+      toast("Please fill in all fields.")
+      return
+    }
+
+    login(form, {
+      onSuccess: () => {
+        setRouterPage(ROUTE_PAGE.HOME)
+      }
+    })
+  }
 
   return (
     <div className="plasmo-pt-6 plasmo-pb-4 plasmo-px-12">
@@ -37,17 +64,31 @@ export const Login = () => {
           Sign in with Github
         </button>
       </div>
-      <form action="" className="plasmo-mt-8">
+      <form action="" className="plasmo-mt-8" onSubmit={handleLogin}>
         <div className="plasmo-space-y-6">
           <input
             type="text"
             className="plasmo-input plasmo-input-bordered plasmo-w-full"
+            required={true}
+            placeholder="Username *"
+            value={form?.username}
+            onChange={(e) => setForm({ ...form, username: e.target.value })}
+          />
+          <input
+            type="text"
+            className="plasmo-input plasmo-input-bordered plasmo-w-full"
+            required={true}
             placeholder="Email *"
+            value={form?.email}
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
           />
           <input
             type="password"
             className="plasmo-input plasmo-input-bordered plasmo-w-full"
+            required={true}
             placeholder="Password *"
+            value={form?.password}
+            onChange={(e) => setForm({ ...form, password: e.target.value })}
           />
           <div className="plasmo-space-y-3">
             <div className="plasmo-flex plasmo-items-center plasmo-gap-2">
@@ -66,9 +107,13 @@ export const Login = () => {
               </a>
             </div>
             <button
-              className="plasmo-btn plasmo-btn-primary plasmo-w-full"
-              onClick={() => setRouterPage(ROUTE_PAGE.HOME)}>
-              Login
+              type="submit"
+              className="plasmo-btn plasmo-btn-primary plasmo-w-full">
+              {isPending ? (
+                <div className="plasmo-loading plasmo-loading-spinner"></div>
+              ) : (
+                <>Login</>
+              )}
             </button>
             <div>
               <div>
