@@ -17,9 +17,9 @@ export const Login = () => {
   const [, setRouterPage] = useStorage<ROUTE_PAGE>(StorageKey.ROUTE_PAGE)
 
   const [form, setForm] = useState<PostLoginArgs>({
-    username: "admin",
-    email: "admin@gmail.com",
-    password: "admin12345"
+    username: "",
+    email: "",
+    password: ""
   })
   const { mutate: login, isPending } = useLogin()
 
