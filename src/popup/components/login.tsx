@@ -109,6 +109,7 @@ export const Login = () => {
               <div>
                 Don't have an account?{" "}
                 <button
+                  type="button"
                   className="plasmo-text-blue-500"
                   onClick={() => setRouterPage(ROUTE_PAGE.REGISTER)}>
                   Sign up

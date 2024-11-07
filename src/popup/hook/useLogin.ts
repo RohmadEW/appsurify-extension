@@ -5,6 +5,7 @@ import { toast } from "react-toastify"
 
 import { useStorage } from "@plasmohq/storage/hook"
 
+import { apiClient, setClientToken } from "~popup/api/api-client"
 import type { ErrorResponse } from "~popup/types/response"
 import { ROUTE_PAGE } from "~popup/types/route"
 import { StorageKey } from "~types/storage"
@@ -31,6 +32,7 @@ export const useLogin = () => {
       }
 
       setCookie(AUTH_COOKIES, auth)
+      setClientToken(apiClient, auth.token)
       setRouterPage(ROUTE_PAGE.HOME)
     },
     onError: (error) => {

@@ -1,5 +1,6 @@
 import { useStorage } from "@plasmohq/storage/hook"
 
+import { Logout } from "~popup/components/logout"
 import { ROUTE_PAGE } from "~popup/types/route"
 import { StorageKey } from "~types/storage"
 
@@ -29,11 +30,7 @@ export default function Home() {
           Start new recording
         </button>
       </div>
-      <button
-        className="plasmo-btn plasmo-btn-warning plasmo-btn-outline plasmo-w-full plasmo-mt-10"
-        onClick={() => setRouterPage(ROUTE_PAGE.LOGIN)}>
-        Logout
-      </button>
+      <Logout />
     </div>
   )
 }

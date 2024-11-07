@@ -14,8 +14,16 @@ import QueryProvider from "~popup/providers/QueryProvider"
 import { AUTH_COOKIES, type AuthType } from "~popup/types/auth"
 import { ROUTE_PAGE } from "~popup/types/route"
 
+import "react-toastify/dist/ReactToastify.css"
 import "~style.css"
 
+import { ToastContainer } from "react-toastify"
+
+import {
+  apiClient,
+  removeClientToken,
+  setClientToken
+} from "~popup/api/api-client"
 import { StorageKey } from "~types/storage"
 
 function IndexPopup() {
@@ -30,15 +38,18 @@ function IndexPopup() {
   useEffect(() => {
     const auth: AuthType = cookie[AUTH_COOKIES]
 
-    if (auth.isAuthenticated && !!auth.token) {
+    if (auth && auth.isAuthenticated && !!auth.token) {
       if (
         routerPage === ROUTE_PAGE.LOGIN ||
         routerPage === ROUTE_PAGE.REGISTER
       ) {
         setRouterPage(ROUTE_PAGE.HOME)
       }
+
+      setClientToken(apiClient, auth.token)
     } else {
       setRouterPage(ROUTE_PAGE.LOGIN)
+      removeClientToken(apiClient)
     }
 
     setPrepare(false)
@@ -56,6 +67,7 @@ function IndexPopup() {
     <QueryProvider>
       <div
         className={`plasmo-overflow-y-auto ${routerPage === ROUTE_PAGE.REPLY_RECORDING ? "plasmo-h-[800px] plasmo-w-[600px]" : "plasmo-h-[600px] plasmo-w-[400px]"}`}>
+        <ToastContainer />
         <div className="plasmo-min-h-[560px]">
           {routerPage === ROUTE_PAGE.LOGIN && <Login />}
           {routerPage === ROUTE_PAGE.REGISTER && <Register />}
