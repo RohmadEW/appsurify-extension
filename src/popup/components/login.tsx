@@ -3,8 +3,8 @@ import { toast } from "react-toastify"
 
 import { useStorage } from "@plasmohq/storage/hook"
 
-import type { PostLoginArgs } from "~api/postLogin"
-import { useLogin } from "~hook/useLogin"
+import type { PostLoginArgs } from "~popup/api/postLogin"
+import { useLogin } from "~popup/hook/useLogin"
 import { ROUTE_PAGE } from "~popup/types/route"
 import { StorageKey } from "~types/storage"
 
@@ -31,11 +31,7 @@ export const Login = () => {
       return
     }
 
-    login(form, {
-      onSuccess: () => {
-        setRouterPage(ROUTE_PAGE.HOME)
-      }
-    })
+    login(form)
   }
 
   return (
@@ -45,21 +41,15 @@ export const Login = () => {
         className="plasmo-w-[80px] plasmo-h-[80px] plasmo-mx-auto"
       />
       <div className="plasmo-mt-6 plasmo-space-y-2 plasmo-px-8">
-        <button
-          className="plasmo-btn plasmo-btn-outline plasmo-w-full"
-          onClick={() => setRouterPage(ROUTE_PAGE.HOME)}>
+        <button className="plasmo-btn plasmo-btn-outline plasmo-w-full">
           <img src={googleIcon} className="plasmo-w-8 plasmo-h-8" />
           <div>Sign in with Google</div>
         </button>
-        <button
-          className="plasmo-btn plasmo-btn-outline plasmo-w-full"
-          onClick={() => setRouterPage(ROUTE_PAGE.HOME)}>
+        <button className="plasmo-btn plasmo-btn-outline plasmo-w-full">
           <img src={microsoftIcon} className="plasmo-w-8 plasmo-h-8" />
           Sign in with Microsoft
         </button>
-        <button
-          className="plasmo-btn plasmo-btn-outline plasmo-w-full"
-          onClick={() => setRouterPage(ROUTE_PAGE.HOME)}>
+        <button className="plasmo-btn plasmo-btn-outline plasmo-w-full">
           <img src={githubIcon} className="plasmo-w-8 plasmo-h-8" />
           Sign in with Github
         </button>

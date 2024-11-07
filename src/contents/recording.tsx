@@ -2,7 +2,7 @@ import { useEffect } from "react"
 
 import { useStorage } from "@plasmohq/storage/hook"
 
-import useRecording from "~hook/useRecording"
+import useRecording from "~popup/hook/useRecording"
 import { MessageChromeAction } from "~types/message-chrome"
 import { RecordingStatus, StorageKey } from "~types/storage"
 

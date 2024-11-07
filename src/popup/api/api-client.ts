@@ -1,8 +1,9 @@
-import axios, { AxiosInstance, isAxiosError } from "axios";
-import { API_URL } from "../libs/constants";
+import axios, { isAxiosError, type AxiosInstance } from "axios"
+
+import { API_URL } from "../../libs/constants"
 
 interface ApiClientOptions {
-  baseURL: string;
+  baseURL: string
 }
 
 /**
@@ -18,12 +19,12 @@ interface ApiClientOptions {
  */
 const ApiClient = (options: ApiClientOptions): AxiosInstance => {
   const instance = axios.create({
-    baseURL: options.baseURL,
-  });
+    baseURL: options.baseURL
+  })
 
   instance.interceptors.response.use(
     (response) => {
-      return response;
+      return response
     },
     async (error) => {
       // if unauthorized auto logout
@@ -32,13 +33,13 @@ const ApiClient = (options: ApiClientOptions): AxiosInstance => {
         // const urlRequest = error.config.url;
         // if (!urlRequest.includes("/teams/api/teams/")) {
         document.cookie =
-          "auth=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+          "auth=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
 
-        window.location.href = "/";
+        window.location.href = "/"
         // console.warn("Unauthorized, redirecting to login page");
         // }
 
-        throw error;
+        throw error
       }
 
       // skip login error logging
@@ -48,38 +49,38 @@ const ApiClient = (options: ApiClientOptions): AxiosInstance => {
         error.config?.method === "post" &&
         error.config?.url?.includes("login")
       ) {
-        throw error;
+        throw error
       }
 
       if (isAxiosError(error) && error.response?.status !== 401) {
         // skip cancelled error logging
         if (error.message === "Query was cancelled by React Query") {
-          throw error;
+          throw error
         }
 
-        throw error;
+        throw error
       }
 
-      console.error(error);
+      console.error(error)
 
-      throw error;
+      throw error
     }
-  );
+  )
 
-  return instance;
-};
+  return instance
+}
 
 const setClientToken = (instance: AxiosInstance, token: string) => {
-  instance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-  instance.defaults.headers.common["Content-Type"] = "application/json";
-};
+  instance.defaults.headers.common["Authorization"] = `Bearer ${token}`
+  instance.defaults.headers.common["Content-Type"] = "application/json"
+}
 
 const removeClientToken = (instance: AxiosInstance) => {
-  delete instance.defaults.headers.common["Authorization"];
-};
+  delete instance.defaults.headers.common["Authorization"]
+}
 
 const apiClient = ApiClient({
-  baseURL: API_URL ?? "",
-});
+  baseURL: API_URL ?? ""
+})
 
-export { apiClient, removeClientToken, setClientToken };
+export { apiClient, removeClientToken, setClientToken }
