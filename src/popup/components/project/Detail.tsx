@@ -1,12 +1,13 @@
 import { useState } from "react"
 import { BiEdit, BiTrash } from "react-icons/bi"
 
+import { useCustomCookies } from "~popup/hooks/useCustomCookies"
 import { useRouter } from "~popup/hooks/useRouter"
 import { ROUTE_PAGE } from "~popup/types/route"
 
 import { useDeleteProject } from "../../hooks/project/useDeleteProject"
 import { useAppDispatch, useAppSelector } from "../../hooks/useStore"
-import { changeProject, resetProject } from "../../store/projectSlice"
+import { resetProject } from "../../store/projectSlice"
 import { type Project } from "../../types/project"
 import { FormProject } from "./Form"
 
@@ -18,12 +19,13 @@ export const DetailProject = ({ project }: DetailProjectProps) => {
   const { project: projectStore } = useAppSelector((state) => state.project)
   const dispatch = useAppDispatch()
   const { setRouterPage } = useRouter()
+  const { setProjectId } = useCustomCookies()
 
   const [showForm, setShowForm] = useState(false)
   const { mutate: deleteProject, isPending: deleting } = useDeleteProject()
 
   const handleProjectSelected = () => {
-    dispatch(changeProject(project))
+    setProjectId(project.id)
     setRouterPage(ROUTE_PAGE.TESTSUITE)
   }
 

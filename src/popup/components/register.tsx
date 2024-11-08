@@ -1,7 +1,5 @@
-import { useStorage } from "@plasmohq/storage/hook"
-
+import { useRouter } from "~popup/hooks/useRouter"
 import { ROUTE_PAGE } from "~popup/types/route"
-import { StorageKey } from "~types/storage"
 
 import githubIcon from "/assets/github-icon.png"
 import googleIcon from "/assets/google-icon.png"
@@ -9,7 +7,7 @@ import icon from "/assets/icon.png"
 import microsoftIcon from "/assets/microsoft-icon.png"
 
 export const Register = () => {
-  const [, setRouterPage] = useStorage<ROUTE_PAGE>(StorageKey.ROUTE_PAGE)
+  const { setRouterPage } = useRouter()
 
   return (
     <div className="plasmo-pt-6 plasmo-pb-4 plasmo-px-12">

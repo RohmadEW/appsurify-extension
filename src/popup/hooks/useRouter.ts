@@ -1,13 +1,16 @@
-import { useStorage } from "@plasmohq/storage/hook"
+import { useCookies } from "react-cookie"
 
-import { ROUTE_PAGE } from "~popup/types/route"
-import { StorageKey } from "~types/storage"
+import { ROUTE_PAGE, ROUTE_PAGE_COOKIE } from "~popup/types/route"
 
 export const useRouter = () => {
-  const [routerPage, setRouterPage] = useStorage<ROUTE_PAGE>(
-    StorageKey.ROUTE_PAGE,
-    (value) => (typeof value === "undefined" ? ROUTE_PAGE.LOGIN : value)
-  )
+  const [cookieRoutePage, setCookieRoutePage] = useCookies([ROUTE_PAGE_COOKIE])
 
-  return { routerPage, setRouterPage }
+  const setRouterPage = (page: ROUTE_PAGE) => {
+    setCookieRoutePage(ROUTE_PAGE_COOKIE, page)
+  }
+
+  return {
+    routerPage: cookieRoutePage[ROUTE_PAGE_COOKIE],
+    setRouterPage
+  }
 }

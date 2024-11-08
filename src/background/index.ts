@@ -15,7 +15,11 @@ const storageLocal = new Storage({
 async function popupStorage() {
   storage.watch({
     [StorageKey.ROUTE_PAGE]: (c) => {
-      console.log(StorageKey.ROUTE_PAGE, c)
+      console.log(
+        "Background script surify",
+        StorageKey.ROUTE_PAGE,
+        `: from ${c.oldValue} to ${c.newValue}`
+      )
     },
     [StorageKey.IS_LOGIN]: (c) => {
       console.log(StorageKey.IS_LOGIN, c)

@@ -4,7 +4,7 @@ import { getTeam } from "../../api/team/getTeam"
 
 export const useTeam = () => {
   return useQuery({
-    queryKey: ["team"],
+    queryKey: ["teams"],
     queryFn: getTeam
   })
 }

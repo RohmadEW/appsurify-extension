@@ -22,22 +22,28 @@ export const useInit = () => {
   const { routerPage, setRouterPage } = useRouter()
 
   useEffect(() => {
-    if (isAuthenticated && token) {
-      if (
-        routerPage === ROUTE_PAGE.LOGIN ||
-        routerPage === ROUTE_PAGE.REGISTER
-      ) {
-        setRouterPage(ROUTE_PAGE.HOME)
+    console.log("useInit routerPage:", ` ${routerPage}`)
+  }, [routerPage])
+
+  useEffect(() => {
+    if (isAuthenticated !== undefined) {
+      if (isAuthenticated && token) {
+        if (
+          routerPage === ROUTE_PAGE.LOGIN ||
+          routerPage === ROUTE_PAGE.REGISTER
+        ) {
+          setRouterPage(ROUTE_PAGE.HOME)
+        }
+
+        setClientToken(apiClient, token)
+      } else {
+        setRouterPage(ROUTE_PAGE.LOGIN)
+
+        removeClientToken(apiClient)
       }
 
-      setClientToken(apiClient, token)
-    } else {
-      setRouterPage(ROUTE_PAGE.LOGIN)
-
-      removeClientToken(apiClient)
+      setPrepare(false)
     }
-
-    setPrepare(false)
   }, [isAuthenticated])
 
   useEffect(() => {

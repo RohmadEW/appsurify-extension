@@ -1,5 +1,7 @@
 import { useEffect } from "react"
 
+import { useCustomCookies } from "~popup/hooks/useCustomCookies"
+
 import { useTeam } from "../../hooks/team/useTeam"
 import { useAppDispatch, useAppSelector } from "../../hooks/useStore"
 import { changeTeam } from "../../store/teamSlice"
@@ -8,10 +10,13 @@ export default function TeamMain() {
   const { data: teams, isLoading } = useTeam()
   const dispatch = useAppDispatch()
   const { team } = useAppSelector((state) => state.team)
+  const { setTeamId } = useCustomCookies()
 
   useEffect(() => {
     if (teams?.results && !team) {
-      dispatch(changeTeam(teams.results[0]))
+      const firstTeam = teams.results[0]
+      dispatch(changeTeam(firstTeam))
+      setTeamId(firstTeam.id)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [teams])
@@ -22,6 +27,7 @@ export default function TeamMain() {
     )
     if (selectedTeam) {
       dispatch(changeTeam(selectedTeam))
+      setTeamId(selectedTeam.id)
     }
   }
 

@@ -11,3 +11,5 @@ export enum ROUTE_PAGE {
   RECORDING = "recording",
   REPLY_RECORDING = "reply-recording"
 }
+
+export const ROUTE_PAGE_COOKIE = "routePage"

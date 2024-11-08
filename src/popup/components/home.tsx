@@ -1,16 +1,14 @@
-import { useStorage } from "@plasmohq/storage/hook"
-
 import { Logout } from "~popup/components/logout"
 import ProjectMain from "~popup/components/project/Main"
 import TeamMain from "~popup/components/team/Main"
+import { useRouter } from "~popup/hooks/useRouter"
 import { useAppSelector } from "~popup/hooks/useStore"
 import { ROUTE_PAGE } from "~popup/types/route"
-import { StorageKey } from "~types/storage"
 
 import icon from "/assets/icon.png"
 
 export default function Home() {
-  const [, setRouterPage] = useStorage<ROUTE_PAGE>(StorageKey.ROUTE_PAGE)
+  const { setRouterPage } = useRouter()
   const { team } = useAppSelector((state) => state.team)
 
   return (

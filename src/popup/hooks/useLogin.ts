@@ -3,14 +3,12 @@ import { AxiosError } from "axios"
 import { useCookies } from "react-cookie"
 import { toast } from "react-toastify"
 
-import { useStorage } from "@plasmohq/storage/hook"
-
 import { apiClient, setClientToken } from "~popup/api/api-client"
+import { useRouter } from "~popup/hooks/useRouter"
 import { useAppDispatch } from "~popup/hooks/useStore"
 import { login } from "~popup/store/authSlice"
 import type { ErrorResponse } from "~popup/types/response"
 import { ROUTE_PAGE } from "~popup/types/route"
-import { StorageKey } from "~types/storage"
 
 import type { PostLoginArgs } from "../api/postLogin"
 import { postLogin } from "../api/postLogin"
@@ -18,7 +16,7 @@ import { AUTH_COOKIES, type JWT } from "../types/auth"
 
 export const useLogin = () => {
   const [, setCookie] = useCookies([AUTH_COOKIES])
-  const [, setRouterPage] = useStorage<ROUTE_PAGE>(StorageKey.ROUTE_PAGE)
+  const { setRouterPage } = useRouter()
   const dispatch = useAppDispatch()
 
   return useMutation<JWT, AxiosError<ErrorResponse>, PostLoginArgs>({

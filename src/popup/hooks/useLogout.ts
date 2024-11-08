@@ -3,13 +3,11 @@ import { AxiosError } from "axios"
 import { useCookies } from "react-cookie"
 import { toast } from "react-toastify"
 
-import { useStorage } from "@plasmohq/storage/hook"
-
+import { useRouter } from "~popup/hooks/useRouter"
 import { useAppDispatch } from "~popup/hooks/useStore"
 import { logout } from "~popup/store/authSlice"
 import type { ErrorResponse } from "~popup/types/response"
 import { ROUTE_PAGE } from "~popup/types/route"
-import { StorageKey } from "~types/storage"
 
 import { apiClient, removeClientToken } from "../api/api-client"
 import { postLogout } from "../api/postLogout"
@@ -17,7 +15,7 @@ import { AUTH_COOKIES } from "../types/auth"
 
 export const useLogout = () => {
   const [, , removeCookie] = useCookies([AUTH_COOKIES])
-  const [, setRouterPage] = useStorage<ROUTE_PAGE>(StorageKey.ROUTE_PAGE)
+  const { setRouterPage } = useRouter()
   const dispatch = useAppDispatch()
 
   const destroySession = () => {
