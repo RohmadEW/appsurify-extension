@@ -19,7 +19,7 @@ export default function TestCaseMain() {
   })
 
   useEffect(() => {
-    if (testsuiteStore?.id) {
+    if (!testsuiteStore) {
       setRouterPage(ROUTE_PAGE.TESTSUITE)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -51,11 +51,7 @@ export const DetailTestcase = ({ testcase }: DetailTestcaseProps) => {
   return (
     <div key={testcase.id}>
       <div
-        className={`plasmo-btn plasmo-w-full ${
-          testcaseStore?.id === testcase.id
-            ? "plasmo-btn-primary"
-            : "plasmo-btn-primary plasmo-btn-outline"
-        }`}
+        className="plasmo-btn plasmo-w-full plasmo-btn-primary plasmo-btn-outline"
         onClick={handleTestcaseSelected}>
         <div className="plasmo-flex plasmo-items-center plasmo-w-full">
           <div className="plasmo-mr-auto">{testcase.name}</div>

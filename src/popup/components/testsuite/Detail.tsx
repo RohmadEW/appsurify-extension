@@ -59,11 +59,7 @@ export const DetailTestsuite = ({ testsuite }: DetailTestsuiteProps) => {
   return (
     <div key={testsuite.id}>
       <div
-        className={`plasmo-btn plasmo-w-full ${
-          testsuiteStore?.id === testsuite.id
-            ? "plasmo-btn-primary"
-            : "plasmo-btn-primary plasmo-btn-outline"
-        }`}
+        className="plasmo-btn plasmo-w-full plasmo-btn-primary plasmo-btn-outline"
         onClick={handleTestsuiteSelected}>
         <div className="plasmo-flex plasmo-items-center plasmo-w-full">
           <div className="plasmo-mr-auto">{testsuite.name}</div>

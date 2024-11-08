@@ -17,7 +17,7 @@ interface DetailProjectProps {
 export const DetailProject = ({ project }: DetailProjectProps) => {
   const { project: projectStore } = useAppSelector((state) => state.project)
   const dispatch = useAppDispatch()
-  const { routerPage, setRouterPage } = useRouter()
+  const { setRouterPage } = useRouter()
 
   const [showForm, setShowForm] = useState(false)
   const { mutate: deleteProject, isPending: deleting } = useDeleteProject()
@@ -55,11 +55,7 @@ export const DetailProject = ({ project }: DetailProjectProps) => {
   return (
     <div key={project.id} className="plasmo-mt-[16px]">
       <div
-        className={`plasmo-btn plasmo-w-full ${
-          projectStore?.id === project.id
-            ? "plasmo-btn-primary"
-            : "plasmo-btn-primary plasmo-btn-outline"
-        }`}
+        className="plasmo-btn plasmo-w-full plasmo-btn-primary plasmo-btn-outline"
         onClick={handleProjectSelected}>
         <div className="plasmo-flex plasmo-items-center plasmo-w-full">
           <div className="plasmo-mr-auto">{project.name}</div>

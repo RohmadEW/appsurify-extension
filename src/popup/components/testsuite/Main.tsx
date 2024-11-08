@@ -4,20 +4,21 @@ import { useRouter } from "~popup/hooks/useRouter"
 import { ROUTE_PAGE } from "~popup/types/route"
 
 import { useProjectById } from "../../hooks/project/useProjectById"
-import { useAppSelector } from "../../hooks/useStore"
+import { useAppDispatch, useAppSelector } from "../../hooks/useStore"
 import ListTestSuite from "./List"
 import { LoadingTestSuite } from "./Loading"
 
 export default function TestSuiteMain() {
   const { project: projectStore } = useAppSelector((state) => state.project)
   const { setRouterPage } = useRouter()
+  const dispatch = useAppDispatch()
 
   const { data: project } = useProjectById({
     id: projectStore?.id
   })
 
   useEffect(() => {
-    if (!projectStore?.id) {
+    if (!projectStore) {
       setRouterPage(ROUTE_PAGE.HOME)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

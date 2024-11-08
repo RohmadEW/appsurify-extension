@@ -42,7 +42,7 @@ export default function ListTestCase() {
         </button>
       </div>
       <FormTestcase showForm={showForm} onShowForm={setShowForm} />
-      <div className="plasmo-p-[16px] plasmo-h-[calc(100vh-58px-24px-24px-68px)] plasmo-divide-y plasmo-overflow-y-auto plasmo-space-y-3">
+      <div className="plasmo-p-[16px] plasmo-h-[calc(100vh-112px)] plasmo-divide-y plasmo-overflow-y-auto plasmo-space-y-3">
         {testcases?.results.map((testcase) => (
           <DetailTestcase key={testcase.id} testcase={testcase} />
         ))}
