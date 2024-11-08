@@ -1,6 +1,9 @@
 import { useState } from "react"
 import { BiEdit, BiTrash } from "react-icons/bi"
 
+import { useRouter } from "~popup/hooks/useRouter"
+import { ROUTE_PAGE } from "~popup/types/route"
+
 import { useDeleteTestsuite } from "../../hooks/testsuite/useDeleteTestsuite"
 import { useAppDispatch, useAppSelector } from "../../hooks/useStore"
 import { changeTestsuite, resetTestsuite } from "../../store/testsuiteSlice"
@@ -12,7 +15,7 @@ interface DetailTestsuiteProps {
 }
 
 export const DetailTestsuite = ({ testsuite }: DetailTestsuiteProps) => {
-  const { project } = useAppSelector((state) => state.project)
+  const { setRouterPage } = useRouter()
   const { testsuite: testsuiteStore } = useAppSelector(
     (state) => state.testsuite
   )
@@ -23,6 +26,7 @@ export const DetailTestsuite = ({ testsuite }: DetailTestsuiteProps) => {
 
   const handleTestsuiteSelected = () => {
     dispatch(changeTestsuite(testsuite))
+    setRouterPage(ROUTE_PAGE.TESTCASE)
   }
 
   const handleDeleteTestsuite = (
