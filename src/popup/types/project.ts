@@ -1,5 +1,4 @@
 export interface Project {
-  id: string
+  id: number
   name: string
-  testsuites: string[]
 }

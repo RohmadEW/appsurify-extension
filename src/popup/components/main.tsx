@@ -1,6 +1,5 @@
 import Home from "~popup/components/home"
 import { Login } from "~popup/components/login"
-import CreateNewProject from "~popup/components/project/new_project"
 import CreateNewRecording from "~popup/components/recording/new_recording"
 import Recording from "~popup/components/recording/recording"
 import ReplyRecording from "~popup/components/recording/reply"
@@ -32,7 +31,6 @@ function MainPopup() {
       <div className="plasmo-min-h-[560px]">
         {routerPage === ROUTE_PAGE.LOGIN && <Login />}
         {routerPage === ROUTE_PAGE.REGISTER && <Register />}
-        {routerPage === ROUTE_PAGE.CREATE_NEW_PROJECT && <CreateNewProject />}
         {routerPage === ROUTE_PAGE.CREATE_NEW_RECORDING && (
           <CreateNewRecording />
         )}
