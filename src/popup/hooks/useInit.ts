@@ -1,18 +1,16 @@
 import { useEffect, useState } from "react"
 import { useCookies } from "react-cookie"
 
-import { useStorage } from "@plasmohq/storage/hook"
-
 import {
   apiClient,
   removeClientToken,
   setClientToken
 } from "~popup/api/api-client"
+import { useRouter } from "~popup/hooks/useRouter"
 import { useAppDispatch, useAppSelector } from "~popup/hooks/useStore"
 import { login, logout } from "~popup/store/authSlice"
 import { AUTH_COOKIES, type JWT } from "~popup/types/auth"
 import { ROUTE_PAGE } from "~popup/types/route"
-import { StorageKey } from "~types/storage"
 
 export const useInit = () => {
   const [prepare, setPrepare] = useState(true)
@@ -21,10 +19,7 @@ export const useInit = () => {
   const dispatch = useAppDispatch()
 
   const [cookie] = useCookies([AUTH_COOKIES])
-  const [routerPage, setRouterPage] = useStorage<ROUTE_PAGE>(
-    StorageKey.ROUTE_PAGE,
-    (value) => (typeof value === "undefined" ? ROUTE_PAGE.LOGIN : value)
-  )
+  const { routerPage, setRouterPage } = useRouter()
 
   useEffect(() => {
     if (isAuthenticated && token) {

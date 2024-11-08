@@ -11,6 +11,7 @@ import "~style.css"
 
 import { ToastContainer } from "react-toastify"
 
+import TestSuiteMain from "~popup/components/testsuite/Main"
 import { useInit } from "~popup/hooks/useInit"
 
 function MainPopup() {
@@ -37,6 +38,7 @@ function MainPopup() {
         {routerPage === ROUTE_PAGE.RECORDING && <Recording />}
         {routerPage === ROUTE_PAGE.REPLY_RECORDING && <ReplyRecording />}
         {routerPage === ROUTE_PAGE.HOME && <Home />}
+        {routerPage === ROUTE_PAGE.TESTSUITE && <TestSuiteMain />}
       </div>
       <div className="plasmo-h-[40px] plasmo-border-t plasmo-flex plasmo-items-center plasmo-justify-center plasmo-gap-4">
         <div>Terms of Service</div>

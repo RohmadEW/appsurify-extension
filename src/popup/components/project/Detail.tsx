@@ -1,6 +1,9 @@
 import { useState } from "react"
 import { BiEdit, BiTrash } from "react-icons/bi"
 
+import { useRouter } from "~popup/hooks/useRouter"
+import { ROUTE_PAGE } from "~popup/types/route"
+
 import { useDeleteProject } from "../../hooks/project/useDeleteProject"
 import { useAppDispatch, useAppSelector } from "../../hooks/useStore"
 import { changeProject, resetProject } from "../../store/projectSlice"
@@ -14,12 +17,14 @@ interface DetailProjectProps {
 export const DetailProject = ({ project }: DetailProjectProps) => {
   const { project: projectStore } = useAppSelector((state) => state.project)
   const dispatch = useAppDispatch()
+  const { routerPage, setRouterPage } = useRouter()
 
   const [showForm, setShowForm] = useState(false)
   const { mutate: deleteProject, isPending: deleting } = useDeleteProject()
 
   const handleProjectSelected = () => {
     dispatch(changeProject(project))
+    setRouterPage(ROUTE_PAGE.TESTSUITE)
   }
 
   const handleDeleteProject = (event: React.MouseEvent<HTMLButtonElement>) => {
