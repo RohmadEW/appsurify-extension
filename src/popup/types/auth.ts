@@ -3,17 +3,14 @@ import type { User } from "./user"
 export const AUTH_COOKIES = "auth"
 
 export interface AuthType {
-  isAuthenticated: boolean
+  isAuthenticated?: boolean
   token?: string | null
   refresh?: string | null
   user?: User
   isLoading?: boolean
 }
 
-export const initialAuthState: AuthType = {
-  isAuthenticated: false,
-  isLoading: true
-}
+export const initialAuthState: AuthType = {}
 
 export interface JWT {
   access: string

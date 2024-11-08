@@ -1,6 +1,7 @@
 import { useStorage } from "@plasmohq/storage/hook"
 
 import { Logout } from "~popup/components/logout"
+import { useAppSelector } from "~popup/hooks/useStore"
 import { ROUTE_PAGE } from "~popup/types/route"
 import { StorageKey } from "~types/storage"
 
@@ -8,6 +9,7 @@ import icon from "/assets/icon.png"
 
 export default function Home() {
   const [, setRouterPage] = useStorage<ROUTE_PAGE>(StorageKey.ROUTE_PAGE)
+  const { user } = useAppSelector((state) => state.auth)
 
   return (
     <div className="plasmo-pt-6 plasmo-pb-4 plasmo-px-12">
@@ -16,7 +18,7 @@ export default function Home() {
         className="plasmo-w-[80px] plasmo-h-[80px] plasmo-mx-auto"
       />
       <div className="plasmo-text-3xl plasmo-mt-4 plasmo-text-center">
-        Welcome to Appsurify!
+        Welcome to {user?.email}!
       </div>
       <div className="plasmo-mt-6 plasmo-space-y-2">
         <button

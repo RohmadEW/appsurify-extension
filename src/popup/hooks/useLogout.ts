@@ -5,6 +5,8 @@ import { toast } from "react-toastify"
 
 import { useStorage } from "@plasmohq/storage/hook"
 
+import { useAppDispatch } from "~popup/hooks/useStore"
+import { logout } from "~popup/store/authSlice"
 import type { ErrorResponse } from "~popup/types/response"
 import { ROUTE_PAGE } from "~popup/types/route"
 import { StorageKey } from "~types/storage"
@@ -16,12 +18,14 @@ import { AUTH_COOKIES } from "../types/auth"
 export const useLogout = () => {
   const [, , removeCookie] = useCookies([AUTH_COOKIES])
   const [, setRouterPage] = useStorage<ROUTE_PAGE>(StorageKey.ROUTE_PAGE)
+  const dispatch = useAppDispatch()
 
   const destroySession = () => {
     toast("Logout successful.")
     removeCookie(AUTH_COOKIES)
     removeClientToken(apiClient)
     setRouterPage(ROUTE_PAGE.LOGIN)
+    dispatch(logout())
   }
 
   return useMutation<string | undefined, AxiosError<ErrorResponse>, unknown>({
