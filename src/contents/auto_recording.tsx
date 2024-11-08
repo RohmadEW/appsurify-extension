@@ -4,7 +4,7 @@ import { useEffect } from "react"
 import { useStorage } from "@plasmohq/storage/hook"
 
 import { uuidv4 } from "~libs/unique"
-import useRecording from "~popup/hook/useRecording"
+import useRecording from "~popup/hooks/useRecording"
 import type { Project } from "~popup/types/project"
 import { MessageChromeAction } from "~types/message-chrome"
 import { RecordingStatus, StorageKey } from "~types/storage"

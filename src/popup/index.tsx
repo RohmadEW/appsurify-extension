@@ -24,6 +24,7 @@ import {
   removeClientToken,
   setClientToken
 } from "~popup/api/api-client"
+import ReduxProvider from "~popup/providers/ReduxProvider"
 import { StorageKey } from "~types/storage"
 
 function IndexPopup() {
@@ -64,27 +65,31 @@ function IndexPopup() {
   }
 
   return (
-    <QueryProvider>
-      <div
-        className={`plasmo-overflow-y-auto ${routerPage === ROUTE_PAGE.REPLY_RECORDING ? "plasmo-h-[800px] plasmo-w-[600px]" : "plasmo-h-[600px] plasmo-w-[400px]"}`}>
-        <ToastContainer />
-        <div className="plasmo-min-h-[560px]">
-          {routerPage === ROUTE_PAGE.LOGIN && <Login />}
-          {routerPage === ROUTE_PAGE.REGISTER && <Register />}
-          {routerPage === ROUTE_PAGE.CREATE_NEW_PROJECT && <CreateNewProject />}
-          {routerPage === ROUTE_PAGE.CREATE_NEW_RECORDING && (
-            <CreateNewRecording />
-          )}
-          {routerPage === ROUTE_PAGE.RECORDING && <Recording />}
-          {routerPage === ROUTE_PAGE.REPLY_RECORDING && <ReplyRecording />}
-          {routerPage === ROUTE_PAGE.HOME && <Home />}
+    <ReduxProvider>
+      <QueryProvider>
+        <div
+          className={`plasmo-overflow-y-auto ${routerPage === ROUTE_PAGE.REPLY_RECORDING ? "plasmo-h-[800px] plasmo-w-[600px]" : "plasmo-h-[600px] plasmo-w-[400px]"}`}>
+          <ToastContainer />
+          <div className="plasmo-min-h-[560px]">
+            {routerPage === ROUTE_PAGE.LOGIN && <Login />}
+            {routerPage === ROUTE_PAGE.REGISTER && <Register />}
+            {routerPage === ROUTE_PAGE.CREATE_NEW_PROJECT && (
+              <CreateNewProject />
+            )}
+            {routerPage === ROUTE_PAGE.CREATE_NEW_RECORDING && (
+              <CreateNewRecording />
+            )}
+            {routerPage === ROUTE_PAGE.RECORDING && <Recording />}
+            {routerPage === ROUTE_PAGE.REPLY_RECORDING && <ReplyRecording />}
+            {routerPage === ROUTE_PAGE.HOME && <Home />}
+          </div>
+          <div className="plasmo-h-[40px] plasmo-border-t plasmo-flex plasmo-items-center plasmo-justify-center plasmo-gap-4">
+            <div>Terms of Service</div>
+            <div>Privacy Policy</div>
+          </div>
         </div>
-        <div className="plasmo-h-[40px] plasmo-border-t plasmo-flex plasmo-items-center plasmo-justify-center plasmo-gap-4">
-          <div>Terms of Service</div>
-          <div>Privacy Policy</div>
-        </div>
-      </div>
-    </QueryProvider>
+      </QueryProvider>
+    </ReduxProvider>
   )
 }
 

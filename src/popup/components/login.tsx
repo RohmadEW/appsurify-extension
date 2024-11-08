@@ -4,7 +4,7 @@ import { toast } from "react-toastify"
 import { useStorage } from "@plasmohq/storage/hook"
 
 import type { PostLoginArgs } from "~popup/api/postLogin"
-import { useLogin } from "~popup/hook/useLogin"
+import { useLogin } from "~popup/hooks/useLogin"
 import { ROUTE_PAGE } from "~popup/types/route"
 import { StorageKey } from "~types/storage"
 
@@ -17,9 +17,9 @@ export const Login = () => {
   const [, setRouterPage] = useStorage<ROUTE_PAGE>(StorageKey.ROUTE_PAGE)
 
   const [form, setForm] = useState<PostLoginArgs>({
-    username: "",
-    email: "",
-    password: ""
+    username: "admin",
+    email: "admin@gmail.com",
+    password: "admin12345"
   })
   const { mutate: login, isPending } = useLogin()
 
@@ -65,7 +65,7 @@ export const Login = () => {
             onChange={(e) => setForm({ ...form, username: e.target.value })}
           />
           <input
-            type="text"
+            type="email"
             className="plasmo-input plasmo-input-bordered plasmo-w-full"
             required={true}
             placeholder="Email *"

@@ -16,7 +16,7 @@ export default function Home() {
         className="plasmo-w-[80px] plasmo-h-[80px] plasmo-mx-auto"
       />
       <div className="plasmo-text-3xl plasmo-mt-4 plasmo-text-center">
-        Welcome, John Doe!
+        Welcome to Appsurify!
       </div>
       <div className="plasmo-mt-6 plasmo-space-y-2">
         <button

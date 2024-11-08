@@ -1,4 +1,4 @@
-import { useLogout } from "~popup/hook/useLogout"
+import { useLogout } from "~popup/hooks/useLogout"
 
 export const Logout = () => {
   const { mutate: logout, isPending: loading } = useLogout()
