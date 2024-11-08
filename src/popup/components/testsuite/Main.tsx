@@ -11,7 +11,9 @@ import ListTestSuite from "./List"
 import { LoadingTestSuite } from "./Loading"
 
 export default function TestSuiteMain() {
+  const { project: projectStore } = useAppSelector((state) => state.project)
   const { team: teamStore } = useAppSelector((state) => state.team)
+
   const dispatch = useAppDispatch()
   const { teamId, projectId } = useCustomCookies()
 
@@ -35,7 +37,7 @@ export default function TestSuiteMain() {
     }
   }, [team])
 
-  if (project && team) {
+  if (projectStore && teamStore) {
     return <ListTestSuite />
   }
 

@@ -1,31 +1,58 @@
 import { useEffect } from "react"
 
-import { useRouter } from "~popup/hooks/useRouter"
-import { ROUTE_PAGE } from "~popup/types/route"
+import { useProjectById } from "~popup/hooks/project/useProjectById"
+import { useTeamById } from "~popup/hooks/team/useTeamById"
+import { useCustomCookies } from "~popup/hooks/useCustomCookies"
+import { changeProject } from "~popup/store/projectSlice"
+import { changeTeam } from "~popup/store/teamSlice"
+import { changeTestsuite } from "~popup/store/testsuiteSlice"
 
 import { useTestsuiteById } from "../../hooks/testsuite/useTestsuiteById"
-import { useAppSelector } from "../../hooks/useStore"
+import { useAppDispatch, useAppSelector } from "../../hooks/useStore"
 import ListTestCase from "./List"
 import { LoadingTestCase } from "./Loading"
 
 export default function TestCaseMain() {
+  const { project: projectStore } = useAppSelector((state) => state.project)
+  const { team: teamStore } = useAppSelector((state) => state.team)
   const { testsuite: testsuiteStore } = useAppSelector(
     (state) => state.testsuite
   )
-  const { setRouterPage } = useRouter()
+
+  const dispatch = useAppDispatch()
+  const { teamId, projectId, testsuiteId } = useCustomCookies()
+
+  const { data: team } = useTeamById({
+    id: teamId
+  })
+
+  const { data: project } = useProjectById({
+    id: projectId
+  })
 
   const { data: testsuite } = useTestsuiteById({
-    id: testsuiteStore?.id
+    id: testsuiteId
   })
 
   useEffect(() => {
-    if (!testsuiteStore) {
-      setRouterPage(ROUTE_PAGE.TESTSUITE)
+    if (project) {
+      dispatch(changeProject(project))
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [project])
 
-  if (testsuite) {
+  useEffect(() => {
+    if (team) {
+      dispatch(changeTeam(team))
+    }
+  }, [team])
+
+  useEffect(() => {
+    if (testsuite) {
+      dispatch(changeTestsuite(testsuite))
+    }
+  }, [testsuite])
+
+  if (testsuiteStore && projectStore && teamStore) {
     return <ListTestCase />
   }
 

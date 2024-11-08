@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { BiEdit, BiTrash } from "react-icons/bi"
 
+import { useCustomCookies } from "~popup/hooks/useCustomCookies"
 import { useRouter } from "~popup/hooks/useRouter"
 import { ROUTE_PAGE } from "~popup/types/route"
 
@@ -20,12 +21,14 @@ export const DetailTestsuite = ({ testsuite }: DetailTestsuiteProps) => {
     (state) => state.testsuite
   )
   const dispatch = useAppDispatch()
+  const { setTestsuiteId } = useCustomCookies()
 
   const [showForm, setShowForm] = useState(false)
   const { mutate: deleteTestsuite, isPending: deleting } = useDeleteTestsuite()
 
   const handleTestsuiteSelected = () => {
     dispatch(changeTestsuite(testsuite))
+    setTestsuiteId(testsuite.id)
     setRouterPage(ROUTE_PAGE.TESTCASE)
   }
 
