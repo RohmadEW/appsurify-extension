@@ -1,9 +1,15 @@
 import type { Project } from "~popup/types/project"
+import type { Team } from "~popup/types/team"
+import type { Testcase } from "~popup/types/testcase"
+import type { Testsuite } from "~popup/types/testsuite"
 
-export interface ProjectRecording {
+export interface Recording {
+  team: Team
   project: Project
-  testsuite: string
+  testsuite: Testsuite
+  testcase: Testcase
   testrun: string
-  api: string
-  user: string
+  rrwebSessionKey: string
+  rrwebPageKey: string
+  rrwebEvents: string[]
 }

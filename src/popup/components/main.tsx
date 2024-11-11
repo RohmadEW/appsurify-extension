@@ -1,6 +1,6 @@
 import Home from "~popup/components/home"
 import { Login } from "~popup/components/login"
-import CreateNewRecording from "~popup/components/recording/new_recording"
+import CreateNewRecording from "~popup/components/recording/new-recording/Main"
 import Recording from "~popup/components/recording/recording"
 import ReplyRecording from "~popup/components/recording/reply"
 import { Register } from "~popup/components/register"

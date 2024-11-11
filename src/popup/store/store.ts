@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit"
 
 import authReducer from "./authSlice"
 import projectSlice from "./projectSlice"
+import recordingReducer from "./recordingSlice"
 import teamReducer from "./teamSlice"
 import testcaseReducer from "./testcaseSlice"
 import testsuiteReducer from "./testsuiteSlice"
@@ -12,7 +13,8 @@ export const store = configureStore({
     team: teamReducer,
     project: projectSlice,
     testsuite: testsuiteReducer,
-    testcase: testcaseReducer
+    testcase: testcaseReducer,
+    recording: recordingReducer
   }
 })
 
