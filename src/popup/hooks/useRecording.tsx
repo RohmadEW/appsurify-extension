@@ -1,25 +1,18 @@
 import type { eventWithTime, mouseInteractionData } from "@rrweb/types"
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import * as rrweb from "rrweb"
 
-import { Storage } from "@plasmohq/storage"
-import { useStorage } from "@plasmohq/storage/hook"
-
-import type { ProjectRecording } from "~popup/types/recording"
+import { useRouter } from "~popup/hooks/useRouter"
 import { ROUTE_PAGE } from "~popup/types/route"
-import { StorageKey } from "~types/storage"
+import { RecordingStatus } from "~types/storage"
 
 export default function useRecording() {
-  const [, setRouterPage] = useStorage<ROUTE_PAGE>(StorageKey.ROUTE_PAGE)
-  const [projectRecording, setProjectRecording] = useStorage<ProjectRecording>(
-    StorageKey.PROJECT_RECORDING
+  const { setRouterPage } = useRouter()
+
+  const [rrwebData, setRrwebData] = useState<eventWithTime[]>([])
+  const [recordingStatus, setRecordingStatus] = useState<RecordingStatus>(
+    RecordingStatus.RECORDING
   )
-  const [rrwebData, setRrwebData] = useStorage<eventWithTime[]>({
-    key: StorageKey.RRWEB_DATA,
-    instance: new Storage({
-      area: "local"
-    })
-  })
 
   const rrwebRef = useRef(null)
 
@@ -68,8 +61,8 @@ export default function useRecording() {
 
   return {
     rrwebData,
-    projectRecording,
-    setProjectRecording,
+    recordingStatus,
+    setRecordingStatus,
     recording
   }
 }

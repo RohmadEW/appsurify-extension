@@ -3,24 +3,19 @@ import rrwebPlayer from "rrweb-player"
 
 import "rrweb-player/dist/style.css"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
-import { Storage } from "@plasmohq/storage"
-import { useStorage } from "@plasmohq/storage/hook"
-
+import { useRouter } from "~popup/hooks/useRouter"
+import { useStorage } from "~popup/hooks/useStorage"
 import { ROUTE_PAGE } from "~popup/types/route"
 import { StorageKey } from "~types/storage"
 
 import icon from "/assets/icon.png"
 
 export default function ReplyRecording() {
-  const [, setRouterPage] = useStorage<ROUTE_PAGE>(StorageKey.ROUTE_PAGE)
-  const [rrwebData, setRrwebData] = useStorage<eventWithTime[]>({
-    key: StorageKey.RRWEB_DATA,
-    instance: new Storage({
-      area: "local"
-    })
-  })
+  const { setRouterPage } = useRouter()
+  const { getItem } = useStorage()
+  const [rrwebData, setRrwebData] = useState<eventWithTime[]>([])
 
   const reply = () => {
     if (rrwebData.length > 0) {
@@ -38,7 +33,13 @@ export default function ReplyRecording() {
   }
 
   useEffect(() => {
-    reply()
+    const fetchRrwebData = async () => {
+      const data = await getItem(StorageKey.RRWEB_DATA)
+      const parsedData = JSON.parse(data)
+      setRrwebData(parsedData ?? [])
+    }
+
+    fetchRrwebData()
   }, [])
 
   useEffect(() => {
