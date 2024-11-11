@@ -1,5 +1,6 @@
 import { ProjectRecording } from "~popup/components/recording/new-recording/Project"
 import { TeamRecording } from "~popup/components/recording/new-recording/Team"
+import { TestsuiteRecording } from "~popup/components/recording/new-recording/Testsuite"
 import { useRouter } from "~popup/hooks/useRouter"
 import { useAppDispatch, useAppSelector } from "~popup/hooks/useStore"
 import { ROUTE_PAGE } from "~popup/types/route"
@@ -37,10 +38,11 @@ export default function CreateNewRecording() {
       <div className="plasmo-text-3xl plasmo-mt-4 plasmo-text-center">
         Start New Recording
       </div>
-      <form action="" className="plasmo-mt-6" onSubmit={handleSubmit}>
-        <div className="plasmo-space-y-6">
+      <form action="" className="plasmo-mt-10" onSubmit={handleSubmit}>
+        <div className="plasmo-space-y-4">
           <TeamRecording />
           <ProjectRecording />
+          <TestsuiteRecording />
           <button
             type="submit"
             className="plasmo-btn plasmo-btn-primary plasmo-w-full"
