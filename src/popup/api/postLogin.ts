@@ -7,7 +7,6 @@ export interface PostLoginResponse extends Response {
 }
 
 export interface PostLoginArgs {
-  username: string
   email: string
   password: string
 }

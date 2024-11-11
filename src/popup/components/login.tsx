@@ -15,7 +15,6 @@ export const Login = () => {
   const { setRouterPage } = useRouter()
 
   const [form, setForm] = useState<PostLoginArgs>({
-    username: "admin",
     email: "admin@gmail.com",
     password: "admin12345"
   })
@@ -24,7 +23,7 @@ export const Login = () => {
   const handleLogin = (event: React.FormEvent) => {
     event.preventDefault()
 
-    if (form.username === "" || form.email === "" || form.password === "") {
+    if (form.email === "" || form.password === "") {
       toast("Please fill in all fields.")
       return
     }
@@ -54,14 +53,6 @@ export const Login = () => {
       </div>
       <form action="" className="plasmo-mt-8" onSubmit={handleLogin}>
         <div className="plasmo-space-y-6">
-          <input
-            type="text"
-            className="plasmo-input plasmo-input-bordered plasmo-w-full"
-            required={true}
-            placeholder="Username *"
-            value={form?.username}
-            onChange={(e) => setForm({ ...form, username: e.target.value })}
-          />
           <input
             type="email"
             className="plasmo-input plasmo-input-bordered plasmo-w-full"
