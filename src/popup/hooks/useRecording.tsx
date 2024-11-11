@@ -1,18 +1,24 @@
 import type { eventWithTime, mouseInteractionData } from "@rrweb/types"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import * as rrweb from "rrweb"
 
 import { useRouter } from "~popup/hooks/useRouter"
+import { useStorage } from "~popup/hooks/useStorage"
 import { ROUTE_PAGE } from "~popup/types/route"
-import { RecordingStatus } from "~types/storage"
+import { MessageChromeAction } from "~types/message-chrome"
+import { StorageKey } from "~types/storage"
 
 export default function useRecording() {
+  const { getItem, setItem } = useStorage()
+
   const { setRouterPage } = useRouter()
 
   const [rrwebData, setRrwebData] = useState<eventWithTime[]>([])
-  const [recordingStatus, setRecordingStatus] = useState<RecordingStatus>(
-    RecordingStatus.RECORDING
-  )
+  const [recordingStatus, setRecordingStatus] = useState<MessageChromeAction>()
+
+  const saveRecordingStatus = async (status: MessageChromeAction) => {
+    await setItem(StorageKey.RECORDING_STATUS, status)
+  }
 
   const rrwebRef = useRef(null)
 
@@ -58,6 +64,19 @@ export default function useRecording() {
       rrwebRef.current?.()
     }
   }
+
+  useEffect(() => {
+    const fetchRecordingStatus = async () => {
+      const status = await getItem(StorageKey.RECORDING_STATUS)
+      setRecordingStatus(status)
+    }
+
+    fetchRecordingStatus()
+  }, [])
+
+  useEffect(() => {
+    saveRecordingStatus(recordingStatus)
+  }, [recordingStatus])
 
   return {
     rrwebData,

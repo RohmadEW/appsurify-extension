@@ -5,7 +5,7 @@ import { useRouter } from "~popup/hooks/useRouter"
 import { useStorage } from "~popup/hooks/useStorage"
 import { ROUTE_PAGE } from "~popup/types/route"
 import { MessageChromeAction } from "~types/message-chrome"
-import { RecordingStatus, StorageKey } from "~types/storage"
+import { StorageKey } from "~types/storage"
 
 import icon from "/assets/icon.png"
 
@@ -14,9 +14,7 @@ export default function Recording() {
   const { getItem, setItem } = useStorage()
 
   const [rrwebData, setRrwebData] = useState<eventWithTime[]>([])
-  const [recordingStatus, setRecordingStatus] = useState<RecordingStatus>(
-    RecordingStatus.RECORDING
-  )
+  const [recordingStatus, setRecordingStatus] = useState<MessageChromeAction>()
 
   useEffect(() => {
     const fetchRrwebData = async () => {
@@ -25,8 +23,22 @@ export default function Recording() {
       setRrwebData(parsedData ?? [])
     }
 
+    const fetchRecordingStatus = async () => {
+      const status = await getItem(StorageKey.RECORDING_STATUS)
+      setRecordingStatus(status)
+    }
+
     fetchRrwebData()
+    fetchRecordingStatus()
   }, [])
+
+  useEffect(() => {
+    const saveRecordingStatus = async () => {
+      await setItem(StorageKey.RECORDING_STATUS, recordingStatus)
+    }
+
+    saveRecordingStatus()
+  }, [recordingStatus])
 
   useEffect(() => {
     const saveRrwebData = async () => {
@@ -36,10 +48,17 @@ export default function Recording() {
     saveRrwebData()
   }, [rrwebData])
 
-  const handleRecording = (status: RecordingStatus) => {
-    setRecordingStatus(status)
+  const handleRecording = (action: MessageChromeAction) => {
+    setRecordingStatus(action)
 
-    if (status === RecordingStatus.RECORDING) {
+    // Send message to content script to start or stop recording
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      chrome.tabs.sendMessage(tabs[0].id, {
+        action
+      })
+    })
+
+    if (action === MessageChromeAction.START_RECORDING) {
       window.close()
     }
   }
@@ -75,18 +94,20 @@ export default function Recording() {
       </div>
       <div className="plasmo-flex plasmo-justify-center">
         <div
-          className={`plasmo-mt-3 plasmo-text-2xl plasmo-font-bold plasmo-px-2 plasmo-py-1 plasmo-rounded-md ${recordingStatus === RecordingStatus.RECORDING ? "plasmo-bg-green-100 plasmo-border plasmo-border-green-300 plasmo-text-green-600" : "plasmo-bg-blue-100 plasmo-border plasmo-border-blue-300 plasmo-text-blue-600"}`}>
+          className={`plasmo-mt-3 plasmo-text-2xl plasmo-font-bold plasmo-px-2 plasmo-py-1 plasmo-rounded-md ${recordingStatus === MessageChromeAction.START_RECORDING ? "plasmo-bg-green-100 plasmo-border plasmo-border-green-300 plasmo-text-green-600" : "plasmo-bg-blue-100 plasmo-border plasmo-border-blue-300 plasmo-text-blue-600"}`}>
           {recordingStatus?.toUpperCase()}
         </div>
       </div>
-      {recordingStatus === RecordingStatus.STOPPED && (
+      {recordingStatus === MessageChromeAction.STOP_RECORDING && (
         <>
           <div className="plasmo-mt-4 plasmo-text-gray-500 plasmo-italic plasmo-text-center">
             {rrwebData?.length} events recorded
           </div>
           <button
             className="plasmo-btn plasmo-btn-outline plasmo-btn-primary plasmo-w-full plasmo-mt-4"
-            onClick={() => handleRecording(RecordingStatus.RECORDING)}>
+            onClick={() =>
+              handleRecording(MessageChromeAction.START_RECORDING)
+            }>
             Start Recording
           </button>
           <button
@@ -101,7 +122,7 @@ export default function Recording() {
           </button>
         </>
       )}
-      {recordingStatus === RecordingStatus.RECORDING && (
+      {recordingStatus === MessageChromeAction.STOP_RECORDING && (
         <>
           <div className="plasmo-mt-4 plasmo-text-gray-500 plasmo-italic plasmo-text-left">
             {rrwebData?.length} events recorded. This is the last data:
@@ -113,7 +134,7 @@ export default function Recording() {
           </div>
           <button
             className="plasmo-btn plasmo-btn-outline plasmo-btn-error plasmo-w-full plasmo-mt-4"
-            onClick={() => handleRecording(RecordingStatus.STOPPED)}>
+            onClick={() => handleRecording(MessageChromeAction.STOP_RECORDING)}>
             Stop Recording
           </button>
         </>

@@ -6,6 +6,7 @@ import { useRouter } from "~popup/hooks/useRouter"
 import { useStorage } from "~popup/hooks/useStorage"
 import { useAppSelector } from "~popup/hooks/useStore"
 import { ROUTE_PAGE } from "~popup/types/route"
+import { MessageChromeAction } from "~types/message-chrome"
 import { StorageKey } from "~types/storage"
 
 import icon from "/assets/icon.png"
@@ -31,6 +32,17 @@ export default function CreateNewRecording() {
     await setItem(StorageKey.PROJECT, JSON.stringify(project))
     await setItem(StorageKey.TESTSUITE, JSON.stringify(testsuite))
     await setItem(StorageKey.TESTCASE, JSON.stringify(testcase))
+    await setItem(
+      StorageKey.RECORDING_STATUS,
+      MessageChromeAction.START_RECORDING
+    )
+
+    // Send message to content script to start recording
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      chrome.tabs.sendMessage(tabs[0].id, {
+        action: MessageChromeAction.START_RECORDING
+      })
+    })
 
     setRouterPage(ROUTE_PAGE.RECORDING)
 

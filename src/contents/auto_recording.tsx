@@ -1,28 +1,18 @@
 import type { PlasmoCSConfig } from "plasmo"
 import { useEffect } from "react"
 
-import { useStorage } from "@plasmohq/storage/hook"
-
-import { uuidv4 } from "~libs/unique"
 import useRecording from "~popup/hooks/useRecording"
-import type { Project } from "~popup/types/project"
+import { useStorage } from "~popup/hooks/useStorage"
 import { MessageChromeAction } from "~types/message-chrome"
-import { RecordingStatus, StorageKey } from "~types/storage"
 
 export const config: PlasmoCSConfig = {
   matches: ["https://appsurify.com/testmap/*"]
 }
 
 export default function Recording() {
-  const [recordingStatus, setRecordingStatus] = useStorage<RecordingStatus>(
-    StorageKey.RECORDING_STATUS
-  )
-  const { recording, projectRecording, setProjectRecording } = useRecording()
+  const { getItem, setItem } = useStorage()
 
-  const [projects, setProjects] = useStorage<Project[]>(
-    StorageKey.PROJECTS,
-    (value) => value ?? []
-  )
+  const { recording, setRecordingStatus } = useRecording()
 
   const queryParams = new URLSearchParams(window.location.search)
   const project = queryParams.get("project")
@@ -31,73 +21,26 @@ export default function Recording() {
   const api = queryParams.get("api")
   const user = queryParams.get("user")
 
-  const upsertProject = () => {
-    setProjects((projects) => {
-      const projectIndex = projects.findIndex((p) => p.name === project)
-
-      if (projectIndex === -1) {
-        return [
-          ...projects,
-          {
-            id: uuidv4(),
-            name: project,
-            testsuites: [testsuite]
-          }
-        ]
-      }
-
-      const projectData = projects[projectIndex]
-
-      if (projectData.testsuites.includes(testsuite)) {
-        return projects
-      }
-
-      return [
-        ...projects.slice(0, projectIndex),
-        {
-          ...projectData,
-          testsuites: [...projectData.testsuites, testsuite]
-        },
-        ...projects.slice(projectIndex + 1)
-      ]
-    })
-  }
-
   useEffect(() => {
-    recording(recordingStatus === RecordingStatus.RECORDING)
-  }, [recordingStatus])
-
-  useEffect(() => {
-    upsertProject()
-
     chrome.runtime.onMessage.addListener((message) => {
       if (message.action === MessageChromeAction.CLEAR_CONSOLE) {
         console.clear()
+      } else if (message.action === MessageChromeAction.START_RECORDING) {
+        console.log("Start recording")
+        recording(true)
+      } else if (message.action === MessageChromeAction.STOP_RECORDING) {
+        console.log("Stop recording")
+        recording(false)
       }
     })
   }, [])
 
-  useEffect(() => {
-    const currentProject = projects.find((p) => p.name === project)
-    if (currentProject) {
-      setProjectRecording({
-        project: currentProject,
-        testsuite,
-        testrun,
-        api,
-        user
-      })
-    }
-  }, [projects])
-
-  useEffect(() => {
-    if (projectRecording) {
-      setRecordingStatus(RecordingStatus.RECORDING)
-    }
-  }, [projectRecording])
+  window.addEventListener("load", () => {
+    setRecordingStatus(MessageChromeAction.START_RECORDING)
+  })
 
   window.addEventListener("beforeunload", () => {
-    setRecordingStatus(RecordingStatus.STOPPED)
+    setRecordingStatus(MessageChromeAction.STOP_RECORDING)
   })
 
   return null
