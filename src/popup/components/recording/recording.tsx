@@ -1,8 +1,8 @@
 import type { eventWithTime } from "@rrweb/types"
+import { useEffect, useState } from "react"
 
-import { Storage } from "@plasmohq/storage"
-import { useStorage } from "@plasmohq/storage/hook"
-
+import { useRouter } from "~popup/hooks/useRouter"
+import { useStorage } from "~popup/hooks/useStorage"
 import { ROUTE_PAGE } from "~popup/types/route"
 import { MessageChromeAction } from "~types/message-chrome"
 import { RecordingStatus, StorageKey } from "~types/storage"
@@ -10,16 +10,31 @@ import { RecordingStatus, StorageKey } from "~types/storage"
 import icon from "/assets/icon.png"
 
 export default function Recording() {
-  const [, setRouterPage] = useStorage<ROUTE_PAGE>(StorageKey.ROUTE_PAGE)
-  const [rrwebData, setRrwebData] = useStorage<eventWithTime[]>({
-    key: StorageKey.RRWEB_DATA,
-    instance: new Storage({
-      area: "local"
-    })
-  })
-  const [recordingStatus, setRecordingStatus] = useStorage<RecordingStatus>(
-    StorageKey.RECORDING_STATUS
+  const { setRouterPage } = useRouter()
+  const { getItem, setItem } = useStorage()
+
+  const [rrwebData, setRrwebData] = useState<eventWithTime[]>([])
+  const [recordingStatus, setRecordingStatus] = useState<RecordingStatus>(
+    RecordingStatus.RECORDING
   )
+
+  useEffect(() => {
+    const fetchRrwebData = async () => {
+      const data = await getItem(StorageKey.RRWEB_DATA)
+      const parsedData = JSON.parse(data)
+      setRrwebData(parsedData ?? [])
+    }
+
+    fetchRrwebData()
+  }, [])
+
+  useEffect(() => {
+    const saveRrwebData = async () => {
+      await setItem(StorageKey.RRWEB_DATA, JSON.stringify(rrwebData))
+    }
+
+    saveRrwebData()
+  }, [rrwebData])
 
   const handleRecording = (status: RecordingStatus) => {
     setRecordingStatus(status)

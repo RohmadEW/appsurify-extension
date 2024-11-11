@@ -3,18 +3,23 @@ import { TeamRecording } from "~popup/components/recording/new-recording/Team"
 import { TestcaseRecording } from "~popup/components/recording/new-recording/Testcase"
 import { TestsuiteRecording } from "~popup/components/recording/new-recording/Testsuite"
 import { useRouter } from "~popup/hooks/useRouter"
-import { useAppDispatch } from "~popup/hooks/useStore"
+import { useAppSelector } from "~popup/hooks/useStore"
 import { ROUTE_PAGE } from "~popup/types/route"
 
 import icon from "/assets/icon.png"
 
 export default function CreateNewRecording() {
-  const { routerPage, setRouterPage } = useRouter()
+  const { setRouterPage } = useRouter()
 
-  const dispatch = useAppDispatch()
+  const { testcase } = useAppSelector((state) => state.testcase)
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+
+    if (!testcase) {
+      alert("Please fill in all the fields")
+      return
+    }
 
     setRouterPage(ROUTE_PAGE.RECORDING)
 
