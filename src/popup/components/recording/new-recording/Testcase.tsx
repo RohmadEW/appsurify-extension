@@ -1,39 +1,39 @@
 import { useEffect, useState } from "react"
 
-import { useProject } from "~popup/hooks/project/useProject"
+import { useTestcase } from "~popup/hooks/testcase/useTestcase"
 import { useCustomCookies } from "~popup/hooks/useCustomCookies"
 import { useAppDispatch, useAppSelector } from "~popup/hooks/useStore"
-import { changeProject } from "~popup/store/projectSlice"
+import { changeTestcase } from "~popup/store/testcaseSlice"
 import { initialPagination, type Pagination } from "~popup/types/pagination"
 
-export const ProjectRecording = () => {
+export const TestcaseRecording = () => {
   const [pagination] = useState<Pagination>(initialPagination)
-  const { setProjectId } = useCustomCookies()
-  const { team } = useAppSelector((state) => state.team)
-  const { project } = useAppSelector((state) => state.project)
+  const { setTestcaseId } = useCustomCookies()
+  const { testsuite } = useAppSelector((state) => state.testsuite)
+  const { testcase } = useAppSelector((state) => state.testcase)
   const dispatch = useAppDispatch()
 
-  const { data: projects, isLoading } = useProject({
+  const { data: testcases, isLoading } = useTestcase({
     pagination
   })
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const projectSelected = projects?.results?.find(
+    const testcaseSelected = testcases?.results?.find(
       (it) => it.id === Number(event.target.value)
     )
-    if (projectSelected) {
-      setProjectId(projectSelected.id)
-      dispatch(changeProject(projectSelected))
+    if (testcaseSelected) {
+      setTestcaseId(testcaseSelected.id)
+      dispatch(changeTestcase(testcaseSelected))
     }
   }
 
   useEffect(() => {
-    if (projects?.results.length) {
-      dispatch(changeProject(projects?.results[0]))
+    if (testcases?.results.length) {
+      dispatch(changeTestcase(testcases?.results[0]))
     }
-  }, [projects])
+  }, [testcases])
 
-  if (!team) {
+  if (!testsuite) {
     return null
   }
 
@@ -46,9 +46,9 @@ export const ProjectRecording = () => {
   return (
     <select
       className="plasmo-select plasmo-select-bordered plasmo-w-full"
-      value={projects?.results.find((it) => it.id === project?.id)?.id}
+      value={testcases?.results.find((it) => it.id === testcase?.id)?.id}
       onChange={handleChange}>
-      {projects?.results.map((item) => (
+      {testcases?.results.map((item) => (
         <option key={item.id} value={item.id}>
           {item.name}
         </option>

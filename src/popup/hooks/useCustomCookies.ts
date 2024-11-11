@@ -6,14 +6,15 @@ import { TESTCASE_ID_COOKIE } from "~popup/types/testcase"
 import { TESTSUITE_ID_COOKIE } from "~popup/types/testsuite"
 
 export const useCustomCookies = () => {
-  const [cookieTeamId, setCookieTeamId] = useCookies([TEAM_ID_COOKIE])
-  const [cookieProjectId, setCookieProjectId] = useCookies([PROJECT_ID_COOKIE])
-  const [cookieTestsuiteId, setCookieTestsuiteId] = useCookies([
-    TESTSUITE_ID_COOKIE
+  const [cookieTeamId, setCookieTeamId, removeCookieTeamId] = useCookies([
+    TEAM_ID_COOKIE
   ])
-  const [cookieTestcaseId, setCookieTestcaseId] = useCookies([
-    TESTCASE_ID_COOKIE
-  ])
+  const [cookieProjectId, setCookieProjectId, removeCookieProjectId] =
+    useCookies([PROJECT_ID_COOKIE])
+  const [cookieTestsuiteId, setCookieTestsuiteId, removeCookieTestsuiteId] =
+    useCookies([TESTSUITE_ID_COOKIE])
+  const [cookieTestcaseId, setCookieTestcaseId, removeCookieTestcaseId] =
+    useCookies([TESTCASE_ID_COOKIE])
 
   const setTeamId = (id: number) => {
     setCookieTeamId(TEAM_ID_COOKIE, id)
@@ -31,6 +32,22 @@ export const useCustomCookies = () => {
     setCookieTestcaseId(TESTCASE_ID_COOKIE, id)
   }
 
+  const removeTeamId = () => {
+    removeCookieTeamId(TEAM_ID_COOKIE)
+  }
+
+  const removeProjectId = () => {
+    removeCookieProjectId(PROJECT_ID_COOKIE)
+  }
+
+  const removeTestsuiteId = () => {
+    removeCookieTestsuiteId(TESTSUITE_ID_COOKIE)
+  }
+
+  const removeTestcaseId = () => {
+    removeCookieTestcaseId(TESTCASE_ID_COOKIE)
+  }
+
   return {
     teamId: cookieTeamId[TEAM_ID_COOKIE],
     projectId: cookieProjectId[PROJECT_ID_COOKIE],
@@ -39,6 +56,10 @@ export const useCustomCookies = () => {
     setTeamId,
     setProjectId,
     setTestsuiteId,
-    setTestcaseId
+    setTestcaseId,
+    removeTeamId,
+    removeProjectId,
+    removeTestsuiteId,
+    removeTestcaseId
   }
 }

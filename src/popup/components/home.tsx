@@ -1,6 +1,7 @@
 import { Logout } from "~popup/components/logout"
 import ProjectMain from "~popup/components/project/Main"
 import TeamMain from "~popup/components/team/Main"
+import { useCustomCookies } from "~popup/hooks/useCustomCookies"
 import { useRouter } from "~popup/hooks/useRouter"
 import { useAppDispatch, useAppSelector } from "~popup/hooks/useStore"
 import { resetProject } from "~popup/store/projectSlice"
@@ -16,6 +17,8 @@ export default function Home() {
   const { setRouterPage } = useRouter()
   const { team } = useAppSelector((state) => state.team)
   const dispatch = useAppDispatch()
+  const { removeTeamId, removeProjectId, removeTestsuiteId, removeTestcaseId } =
+    useCustomCookies()
 
   const handleNewRecording = () => {
     dispatch(resetTeam())
@@ -23,6 +26,11 @@ export default function Home() {
     dispatch(resetTestsuite())
     dispatch(resetTestcase())
     dispatch(resetRecording())
+
+    removeTeamId()
+    removeProjectId()
+    removeTestsuiteId()
+    removeTestcaseId()
 
     setRouterPage(ROUTE_PAGE.CREATE_NEW_RECORDING)
   }

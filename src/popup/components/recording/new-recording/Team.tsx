@@ -1,11 +1,13 @@
 import { useEffect } from "react"
 
 import { useTeam } from "~popup/hooks/team/useTeam"
+import { useCustomCookies } from "~popup/hooks/useCustomCookies"
 import { useAppDispatch, useAppSelector } from "~popup/hooks/useStore"
 import { changeTeam } from "~popup/store/teamSlice"
 
 export const TeamRecording = () => {
   const { team } = useAppSelector((state) => state.team)
+  const { setTeamId } = useCustomCookies()
   const dispatch = useAppDispatch()
 
   const { data: teams, isLoading } = useTeam()
@@ -14,7 +16,8 @@ export const TeamRecording = () => {
     const teamSelected = teams?.results?.find(
       (it) => it.id === Number(event.target.value)
     )
-    if (!teamSelected) {
+    if (teamSelected) {
+      setTeamId(teamSelected.id)
       dispatch(changeTeam(teamSelected))
     }
   }

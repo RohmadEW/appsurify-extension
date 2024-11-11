@@ -1,8 +1,9 @@
 import { ProjectRecording } from "~popup/components/recording/new-recording/Project"
 import { TeamRecording } from "~popup/components/recording/new-recording/Team"
+import { TestcaseRecording } from "~popup/components/recording/new-recording/Testcase"
 import { TestsuiteRecording } from "~popup/components/recording/new-recording/Testsuite"
 import { useRouter } from "~popup/hooks/useRouter"
-import { useAppDispatch, useAppSelector } from "~popup/hooks/useStore"
+import { useAppDispatch } from "~popup/hooks/useStore"
 import { ROUTE_PAGE } from "~popup/types/route"
 
 import icon from "/assets/icon.png"
@@ -10,19 +11,10 @@ import icon from "/assets/icon.png"
 export default function CreateNewRecording() {
   const { routerPage, setRouterPage } = useRouter()
 
-  const { team } = useAppSelector((state) => state.team)
-  const { project } = useAppSelector((state) => state.project)
-  const { testsuite } = useAppSelector((state) => state.testsuite)
-  const { testcase } = useAppSelector((state) => state.testcase)
-
   const dispatch = useAppDispatch()
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-
-    if (!project || !testsuite) {
-      return
-    }
 
     setRouterPage(ROUTE_PAGE.RECORDING)
 
@@ -43,10 +35,10 @@ export default function CreateNewRecording() {
           <TeamRecording />
           <ProjectRecording />
           <TestsuiteRecording />
+          <TestcaseRecording />
           <button
             type="submit"
-            className="plasmo-btn plasmo-btn-primary plasmo-w-full"
-            disabled={!project || !testsuite}>
+            className="plasmo-btn plasmo-btn-primary plasmo-w-full">
             Start Recording
           </button>
           <button

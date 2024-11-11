@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react"
 
 import { useTestsuite } from "~popup/hooks/testsuite/useTestsuite"
+import { useCustomCookies } from "~popup/hooks/useCustomCookies"
 import { useAppDispatch, useAppSelector } from "~popup/hooks/useStore"
 import { changeTestsuite } from "~popup/store/testsuiteSlice"
 import { initialPagination, type Pagination } from "~popup/types/pagination"
 
 export const TestsuiteRecording = () => {
   const [pagination] = useState<Pagination>(initialPagination)
-
+  const { setTestcaseId } = useCustomCookies()
   const { project } = useAppSelector((state) => state.project)
   const { testsuite } = useAppSelector((state) => state.testsuite)
   const dispatch = useAppDispatch()
@@ -20,7 +21,8 @@ export const TestsuiteRecording = () => {
     const testsuiteSelected = testsuites?.results?.find(
       (it) => it.id === Number(event.target.value)
     )
-    if (!testsuiteSelected) {
+    if (testsuiteSelected) {
+      setTestcaseId(testsuiteSelected.id)
       dispatch(changeTestsuite(testsuiteSelected))
     }
   }
