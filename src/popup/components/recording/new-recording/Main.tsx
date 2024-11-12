@@ -1,3 +1,5 @@
+import { useState } from "react"
+
 import { ProjectRecording } from "~popup/components/recording/new-recording/Project"
 import { TeamRecording } from "~popup/components/recording/new-recording/Team"
 import { TestcaseRecording } from "~popup/components/recording/new-recording/Testcase"
@@ -20,10 +22,12 @@ export default function CreateNewRecording() {
   const { testsuite } = useAppSelector((state) => state.testsuite)
   const { testcase } = useAppSelector((state) => state.testcase)
 
+  const [testrunName, setTestrunName] = useState<string>("")
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    if (!testcase) {
+    if (!testcase || !testsuite || !project || !team || !testrunName) {
       alert("Please fill in all the fields")
       return
     }
@@ -32,10 +36,12 @@ export default function CreateNewRecording() {
     await setItem(StorageKey.PROJECT, JSON.stringify(project))
     await setItem(StorageKey.TESTSUITE, JSON.stringify(testsuite))
     await setItem(StorageKey.TESTCASE, JSON.stringify(testcase))
+    await setItem(StorageKey.TESTRUN, testrunName)
     await setItem(
       StorageKey.RECORDING_STATUS,
       MessageChromeAction.START_RECORDING
     )
+    await setItem(StorageKey.RRWEB_DATA, JSON.stringify([]))
 
     // Send message to content script to start recording
     chrome.runtime.sendMessage({ action: MessageChromeAction.START_RECORDING })
@@ -60,6 +66,13 @@ export default function CreateNewRecording() {
           <ProjectRecording />
           <TestsuiteRecording />
           <TestcaseRecording />
+          <input
+            type="text"
+            className="plasmo-input plasmo-input-bordered plasmo-w-full"
+            value={testrunName}
+            onChange={(e) => setTestrunName(e.target.value)}
+            placeholder="Testrun Name"
+          />
           <button
             type="submit"
             className="plasmo-btn plasmo-btn-primary plasmo-w-full">

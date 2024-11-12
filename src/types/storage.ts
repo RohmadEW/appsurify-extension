@@ -4,5 +4,6 @@ export enum StorageKey {
   TEAM = "team",
   PROJECT = "project",
   TESTSUITE = "testsuite",
-  TESTCASE = "testcase"
+  TESTCASE = "testcase",
+  TESTRUN = "testrun"
 }
