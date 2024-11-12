@@ -140,8 +140,8 @@ export default function Recording() {
         testsuite_name: testsuite?.name,
         testcase_name: testcase?.name,
         testrun_name: testrunName,
-        rrwebSessionKey: uuidv4(),
-        rrwebPageKey: uuidv4(),
+        rrwebSessionKey: uuidv4().replaceAll("-", ""),
+        rrwebPageKey: uuidv4().replaceAll("-", ""),
         rrwebEvents: rrwebData
       },
       {
@@ -178,17 +178,17 @@ export default function Recording() {
           <button
             className="plasmo-btn plasmo-btn-primary plasmo-w-full plasmo-mt-4"
             onClick={handleSaeRecording}>
-            Save Recording
+            {saving ? (
+              <div className="plasmo-loading plasmo-loading-spinner"></div>
+            ) : (
+              <div>Save Recording</div>
+            )}
           </button>
           <button
             className="plasmo-btn plasmo-btn-outline plasmo-btn-primary plasmo-w-full plasmo-mt-4"
             onClick={() => handleRecording(MessageChromeAction.START_RECORDING)}
             disabled={saving}>
-            {saving ? (
-              <div className="plasmo-loading plasmo-loading-spinner"></div>
-            ) : (
-              <div>Start Recording</div>
-            )}
+            Start Recording
           </button>
           <button
             className="plasmo-btn plasmo-btn-outline plasmo-btn-primary plasmo-w-full plasmo-mt-4"

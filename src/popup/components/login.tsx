@@ -15,8 +15,8 @@ export const Login = () => {
   const { setRouterPage } = useRouter()
 
   const [form, setForm] = useState<PostLoginArgs>({
-    email: "admin@gmail.com",
-    password: "admin12345"
+    email: "",
+    password: ""
   })
   const { mutate: login, isPending } = useLogin()
 
