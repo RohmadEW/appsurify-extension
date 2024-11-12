@@ -177,7 +177,8 @@ export default function Recording() {
           </div>
           <button
             className="plasmo-btn plasmo-btn-primary plasmo-w-full plasmo-mt-4"
-            onClick={handleSaeRecording}>
+            onClick={handleSaeRecording}
+            disabled={saving}>
             {saving ? (
               <div className="plasmo-loading plasmo-loading-spinner"></div>
             ) : (
@@ -186,8 +187,9 @@ export default function Recording() {
           </button>
           <button
             className="plasmo-btn plasmo-btn-outline plasmo-btn-primary plasmo-w-full plasmo-mt-4"
-            onClick={() => handleRecording(MessageChromeAction.START_RECORDING)}
-            disabled={saving}>
+            onClick={() =>
+              handleRecording(MessageChromeAction.START_RECORDING)
+            }>
             Start Recording
           </button>
           <button

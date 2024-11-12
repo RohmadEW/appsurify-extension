@@ -66,16 +66,21 @@ export default function CreateNewRecording() {
           <ProjectRecording />
           <TestsuiteRecording />
           <TestcaseRecording />
-          <input
-            type="text"
-            className="plasmo-input plasmo-input-bordered plasmo-w-full"
-            value={testrunName}
-            onChange={(e) => setTestrunName(e.target.value)}
-            placeholder="Testrun Name"
-          />
+          {testcase && (
+            <input
+              type="text"
+              className="plasmo-input plasmo-input-bordered plasmo-w-full"
+              value={testrunName}
+              onChange={(e) => setTestrunName(e.target.value)}
+              placeholder="Testrun Name"
+            />
+          )}
           <button
             type="submit"
-            className="plasmo-btn plasmo-btn-primary plasmo-w-full">
+            className="plasmo-btn plasmo-btn-primary plasmo-w-full"
+            disabled={
+              !testcase || !testsuite || !project || !team || !testrunName
+            }>
             Start Recording
           </button>
           <button
