@@ -43,6 +43,7 @@ export default function useRecording() {
           )
             return
 
+          console.log("event", event)
           snapshots.push(event)
 
           if (timeoutSnapshot === null) {
@@ -68,18 +69,38 @@ export default function useRecording() {
   useEffect(() => {
     const fetchRecordingStatus = async () => {
       const status = await getItem(StorageKey.RECORDING_STATUS)
+      console.log("fetchRecordingStatus status", status)
       setRecordingStatus(status)
     }
 
+    const fetchRrwebData = async () => {
+      const data = await getItem(StorageKey.RRWEB_DATA)
+      const parsedData = JSON.parse(data)
+      if (parsedData) {
+        setRrwebData(parsedData ?? [])
+      }
+    }
+
     fetchRecordingStatus()
+    fetchRrwebData()
   }, [])
 
   useEffect(() => {
-    saveRecordingStatus(recordingStatus)
+    console.log("recordingStatus", recordingStatus)
+    recording(recordingStatus === MessageChromeAction.START_RECORDING)
   }, [recordingStatus])
+
+  useEffect(() => {
+    const saveRrwebData = async () => {
+      await setItem(StorageKey.RRWEB_DATA, JSON.stringify(rrwebData))
+    }
+
+    saveRrwebData()
+  }, [rrwebData])
 
   return {
     rrwebData,
+    setRrwebData,
     recordingStatus,
     setRecordingStatus,
     recording

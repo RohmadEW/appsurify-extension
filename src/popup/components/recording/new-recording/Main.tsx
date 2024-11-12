@@ -38,15 +38,11 @@ export default function CreateNewRecording() {
     )
 
     // Send message to content script to start recording
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      chrome.tabs.sendMessage(tabs[0].id, {
-        action: MessageChromeAction.START_RECORDING
-      })
-    })
+    chrome.runtime.sendMessage({ action: MessageChromeAction.START_RECORDING })
 
     setRouterPage(ROUTE_PAGE.RECORDING)
 
-    window.close()
+    // window.close()
   }
 
   return (

@@ -17,6 +17,13 @@ chrome.runtime.onMessage.addListener(async (message) => {
       break
 
     default:
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        if (tabs[0]?.id) {
+          chrome.tabs.sendMessage(tabs[0].id, {
+            action: message.action
+          })
+        }
+      })
       break
   }
 

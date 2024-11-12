@@ -13,57 +13,38 @@ export default function Recording() {
   const { setRouterPage } = useRouter()
   const { getItem, setItem } = useStorage()
 
-  const [rrwebData, setRrwebData] = useState<eventWithTime[]>([])
   const [recordingStatus, setRecordingStatus] = useState<MessageChromeAction>()
+  const [rrwebData, setRrwebData] = useState<eventWithTime[]>([])
 
   useEffect(() => {
-    const fetchRrwebData = async () => {
-      const data = await getItem(StorageKey.RRWEB_DATA)
-      const parsedData = JSON.parse(data)
-      setRrwebData(parsedData ?? [])
-    }
-
     const fetchRecordingStatus = async () => {
       const status = await getItem(StorageKey.RECORDING_STATUS)
       setRecordingStatus(status)
     }
 
-    fetchRrwebData()
+    const fetchRrwebData = async () => {
+      const data = await getItem(StorageKey.RRWEB_DATA)
+      const parsedData = JSON.parse(data)
+      if (parsedData) {
+        setRrwebData(parsedData ?? [])
+      }
+    }
+
     fetchRecordingStatus()
+    fetchRrwebData()
   }, [])
-
-  useEffect(() => {
-    const saveRecordingStatus = async () => {
-      await setItem(StorageKey.RECORDING_STATUS, recordingStatus)
-    }
-
-    saveRecordingStatus()
-  }, [recordingStatus])
-
-  useEffect(() => {
-    const saveRrwebData = async () => {
-      await setItem(StorageKey.RRWEB_DATA, JSON.stringify(rrwebData))
-    }
-
-    saveRrwebData()
-  }, [rrwebData])
 
   const handleRecording = (action: MessageChromeAction) => {
     setRecordingStatus(action)
 
-    // Send message to content script to start or stop recording
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      chrome.tabs.sendMessage(tabs[0].id, {
-        action
-      })
-    })
+    chrome.runtime.sendMessage({ action })
 
     if (action === MessageChromeAction.START_RECORDING) {
       window.close()
     }
   }
 
-  const handleDownloadRrwebData = () => {
+  const handleDownloadRrwebData = async () => {
     const dataStr = `data:text/json;charset=utf-8,${encodeURIComponent(
       JSON.stringify(rrwebData)
     )}`
@@ -75,12 +56,17 @@ export default function Recording() {
     downloadAnchorNode.remove
   }
 
-  const clearRecording = () => {
+  const clearRecording = async () => {
+    await setItem(StorageKey.RRWEB_DATA, JSON.stringify([]))
     setRrwebData([])
   }
 
   const clearConsole = () => {
     chrome.runtime.sendMessage({ action: MessageChromeAction.CLEAR_CONSOLE })
+  }
+
+  const handleBack = () => {
+    setRouterPage(ROUTE_PAGE.CREATE_NEW_RECORDING)
   }
 
   return (
@@ -94,8 +80,10 @@ export default function Recording() {
       </div>
       <div className="plasmo-flex plasmo-justify-center">
         <div
-          className={`plasmo-mt-3 plasmo-text-2xl plasmo-font-bold plasmo-px-2 plasmo-py-1 plasmo-rounded-md ${recordingStatus === MessageChromeAction.START_RECORDING ? "plasmo-bg-green-100 plasmo-border plasmo-border-green-300 plasmo-text-green-600" : "plasmo-bg-blue-100 plasmo-border plasmo-border-blue-300 plasmo-text-blue-600"}`}>
-          {recordingStatus?.toUpperCase()}
+          className={`plasmo-mt-3 plasmo-text-2xl plasmo-font-bold plasmo-px-2 plasmo-py-1 plasmo-rounded-md ${recordingStatus === MessageChromeAction.START_RECORDING ? "plasmo-bg-green-100 plasmo-border plasmo-border-green-300 plasmo-text-green-600" : "plasmo-bg-blue-100 plasmo-border plasmo-border-blue-300 plasmo-text-blue-600"} plasmo-uppercase`}>
+          {recordingStatus === MessageChromeAction.START_RECORDING
+            ? "Recording"
+            : "Not Recording"}
         </div>
       </div>
       {recordingStatus === MessageChromeAction.STOP_RECORDING && (
@@ -146,7 +134,7 @@ export default function Recording() {
       </button>
       <button
         className="plasmo-btn plasmo-btn-outline plasmo-w-full plasmo-mt-8"
-        onClick={() => setRouterPage(ROUTE_PAGE.HOME)}>
+        onClick={handleBack}>
         Back
       </button>
     </div>
