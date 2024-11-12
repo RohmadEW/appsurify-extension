@@ -1,5 +1,5 @@
-import type { eventWithTime, mouseInteractionData } from "@rrweb/types"
-import { useEffect, useRef, useState } from "react"
+import type { mouseInteractionData } from "@rrweb/types"
+import { useRef } from "react"
 import * as rrweb from "rrweb"
 
 import { useRouter } from "~popup/hooks/useRouter"
@@ -13,14 +13,25 @@ export default function useRecording() {
 
   const { setRouterPage } = useRouter()
 
-  const [rrwebData, setRrwebData] = useState<eventWithTime[]>([])
-  const [recordingStatus, setRecordingStatus] = useState<MessageChromeAction>()
-
-  const saveRecordingStatus = async (status: MessageChromeAction) => {
-    await setItem(StorageKey.RECORDING_STATUS, status)
-  }
-
   const rrwebRef = useRef(null)
+
+  const saveRrwebData = async (snapshots) => {
+    const data = await getItem(StorageKey.RRWEB_DATA)
+    const parsedData = JSON.parse(data)
+    let dataSaved = snapshots
+    if (Array.isArray(parsedData)) {
+      dataSaved = [...parsedData, ...snapshots]
+      await setItem(StorageKey.RRWEB_DATA, JSON.stringify(dataSaved))
+    } else {
+      await setItem(StorageKey.RRWEB_DATA, JSON.stringify(dataSaved))
+    }
+
+    // Send to background
+    chrome.runtime.sendMessage({
+      action: MessageChromeAction.RRWEB_SAVED,
+      data: dataSaved
+    })
+  }
 
   const recording = (run: boolean) => {
     let snapshots = []
@@ -43,12 +54,11 @@ export default function useRecording() {
           )
             return
 
-          console.log("event", event)
           snapshots.push(event)
 
           if (timeoutSnapshot === null) {
             timeoutSnapshot = setTimeout(() => {
-              setRrwebData((data) => [...data, ...snapshots])
+              saveRrwebData(snapshots)
               snapshots = []
               timeoutSnapshot = null
             }, 1000)
@@ -66,43 +76,7 @@ export default function useRecording() {
     }
   }
 
-  useEffect(() => {
-    const fetchRecordingStatus = async () => {
-      const status = await getItem(StorageKey.RECORDING_STATUS)
-      console.log("fetchRecordingStatus status", status)
-      setRecordingStatus(status)
-    }
-
-    const fetchRrwebData = async () => {
-      const data = await getItem(StorageKey.RRWEB_DATA)
-      const parsedData = JSON.parse(data)
-      if (parsedData) {
-        setRrwebData(parsedData ?? [])
-      }
-    }
-
-    fetchRecordingStatus()
-    fetchRrwebData()
-  }, [])
-
-  useEffect(() => {
-    console.log("recordingStatus", recordingStatus)
-    recording(recordingStatus === MessageChromeAction.START_RECORDING)
-  }, [recordingStatus])
-
-  useEffect(() => {
-    const saveRrwebData = async () => {
-      await setItem(StorageKey.RRWEB_DATA, JSON.stringify(rrwebData))
-    }
-
-    saveRrwebData()
-  }, [rrwebData])
-
   return {
-    rrwebData,
-    setRrwebData,
-    recordingStatus,
-    setRecordingStatus,
     recording
   }
 }

@@ -17,6 +17,12 @@ export default function Recording() {
   const [rrwebData, setRrwebData] = useState<eventWithTime[]>([])
 
   useEffect(() => {
+    chrome.runtime.onMessage.addListener((message) => {
+      if (message.action === MessageChromeAction.RRWEB_SAVED) {
+        fetchRrwebData()
+      }
+    })
+
     const fetchRecordingStatus = async () => {
       const status = await getItem(StorageKey.RECORDING_STATUS)
       setRecordingStatus(status)
@@ -110,7 +116,7 @@ export default function Recording() {
           </button>
         </>
       )}
-      {recordingStatus === MessageChromeAction.STOP_RECORDING && (
+      {recordingStatus === MessageChromeAction.START_RECORDING && (
         <>
           <div className="plasmo-mt-4 plasmo-text-gray-500 plasmo-italic plasmo-text-left">
             {rrwebData?.length} events recorded. This is the last data:

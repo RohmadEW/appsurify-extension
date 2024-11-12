@@ -42,7 +42,7 @@ export default function CreateNewRecording() {
 
     setRouterPage(ROUTE_PAGE.RECORDING)
 
-    // window.close()
+    window.close()
   }
 
   return (

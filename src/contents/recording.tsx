@@ -11,10 +11,8 @@ export default function Recording() {
       if (message.action === MessageChromeAction.CLEAR_CONSOLE) {
         console.clear()
       } else if (message.action === MessageChromeAction.START_RECORDING) {
-        console.log("Start recording")
         recording(true)
       } else if (message.action === MessageChromeAction.STOP_RECORDING) {
-        console.log("Stop recording")
         recording(false)
       }
     })

@@ -12,7 +12,7 @@ export const config: PlasmoCSConfig = {
 export default function Recording() {
   const { getItem, setItem } = useStorage()
 
-  const { recording, setRecordingStatus } = useRecording()
+  const { recording } = useRecording()
 
   const queryParams = new URLSearchParams(window.location.search)
   const project = queryParams.get("project")
@@ -25,22 +25,16 @@ export default function Recording() {
     chrome.runtime.onMessage.addListener((message) => {
       if (message.action === MessageChromeAction.CLEAR_CONSOLE) {
         console.clear()
-      } else if (message.action === MessageChromeAction.START_RECORDING) {
-        console.log("Start recording")
-        recording(true)
-      } else if (message.action === MessageChromeAction.STOP_RECORDING) {
-        console.log("Stop recording")
-        recording(false)
       }
     })
   }, [])
 
   window.addEventListener("load", () => {
-    setRecordingStatus(MessageChromeAction.START_RECORDING)
+    recording(true)
   })
 
   window.addEventListener("beforeunload", () => {
-    setRecordingStatus(MessageChromeAction.STOP_RECORDING)
+    recording(false)
   })
 
   return null
