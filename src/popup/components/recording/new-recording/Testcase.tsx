@@ -43,6 +43,14 @@ export const TestcaseRecording = () => {
     )
   }
 
+  if (!testcases?.results.length) {
+    return (
+      <div className="plasmo-text-sm plasmo-text-gray-500 plasmo-mt-2">
+        No testcases found
+      </div>
+    )
+  }
+
   return (
     <select
       className="plasmo-select plasmo-select-bordered plasmo-w-full"
