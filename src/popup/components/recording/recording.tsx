@@ -145,9 +145,9 @@ export default function Recording() {
         rrwebEvents: rrwebData
       },
       {
-        onSuccess: () => {
-          clearRecording()
-          setRouterPage(ROUTE_PAGE.CREATE_NEW_PROJECT)
+        onSuccess: async () => {
+          await clearRecording()
+          handleBack()
         }
       }
     )
