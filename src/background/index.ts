@@ -1,5 +1,7 @@
 import { MessageChromeAction } from "~types/message-chrome"
 
+export {}
+
 console.log("Background script surify is running")
 
 chrome.runtime.onMessage.addListener(async (message) => {
@@ -21,6 +23,14 @@ chrome.runtime.onMessage.addListener(async (message) => {
         if (tabs[0]?.id) {
           chrome.tabs.sendMessage(tabs[0].id, {
             action: message.action
+          })
+          // Send to popup for notification
+          chrome.runtime.sendMessage({
+            action: MessageChromeAction.HAS_ACTIVE_TAB
+          })
+        } else {
+          chrome.runtime.sendMessage({
+            action: MessageChromeAction.NO_ACTIVE_TAB
           })
         }
       })

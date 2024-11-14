@@ -1,5 +1,6 @@
 import type { eventWithTime } from "@rrweb/types"
 import { useEffect, useState } from "react"
+import { toast } from "react-toastify"
 
 import { uuidv4 } from "~libs/unique"
 import { useSaveRecord } from "~popup/hooks/record/useSaveRecord"
@@ -32,8 +33,23 @@ export default function Recording() {
 
   useEffect(() => {
     chrome.runtime.onMessage.addListener((message) => {
-      if (message.action === MessageChromeAction.RRWEB_SAVED) {
-        fetchRrwebData()
+      switch (message.action) {
+        case MessageChromeAction.RRWEB_SAVED:
+          fetchRrwebData()
+          break
+
+        case MessageChromeAction.NO_ACTIVE_TAB:
+          toast("No active tab found")
+          break
+
+        case MessageChromeAction.HAS_ACTIVE_TAB:
+          if (recordingStatus === MessageChromeAction.START_RECORDING) {
+            window.close()
+          }
+          break
+
+        default:
+          break
       }
     })
 
@@ -101,10 +117,6 @@ export default function Recording() {
     setRecordingStatus(action)
 
     chrome.runtime.sendMessage({ action })
-
-    if (action === MessageChromeAction.START_RECORDING) {
-      window.close()
-    }
   }
 
   const handleDownloadRrwebData = async () => {

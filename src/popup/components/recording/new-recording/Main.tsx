@@ -1,4 +1,5 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { toast } from "react-toastify"
 
 import { ProjectRecording } from "~popup/components/recording/new-recording/Project"
 import { TeamRecording } from "~popup/components/recording/new-recording/Team"
@@ -24,6 +25,23 @@ export default function CreateNewRecording() {
 
   const [testrunName, setTestrunName] = useState<string>("")
 
+  useEffect(() => {
+    chrome.runtime.onMessage.addListener((message) => {
+      switch (message.action) {
+        case MessageChromeAction.NO_ACTIVE_TAB:
+          toast("No active tab found")
+          break
+
+        case MessageChromeAction.HAS_ACTIVE_TAB:
+          window.close()
+          break
+
+        default:
+          break
+      }
+    })
+  }, [])
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
@@ -47,8 +65,6 @@ export default function CreateNewRecording() {
     chrome.runtime.sendMessage({ action: MessageChromeAction.START_RECORDING })
 
     setRouterPage(ROUTE_PAGE.RECORDING)
-
-    window.close()
   }
 
   return (
