@@ -33,6 +33,7 @@ export default function CreateNewRecording() {
           break
 
         case MessageChromeAction.HAS_ACTIVE_TAB:
+          setRouterPage(ROUTE_PAGE.RECORDING)
           window.close()
           break
 
@@ -63,8 +64,6 @@ export default function CreateNewRecording() {
 
     // Send message to content script to start recording
     chrome.runtime.sendMessage({ action: MessageChromeAction.START_RECORDING })
-
-    setRouterPage(ROUTE_PAGE.RECORDING)
   }
 
   return (
