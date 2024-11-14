@@ -1,7 +1,12 @@
+import type { PlasmoCSConfig } from "plasmo"
 import { useEffect } from "react"
 
 import useRecording from "~popup/hooks/useRecording"
 import { MessageChromeAction } from "~types/message-chrome"
+
+export const config: PlasmoCSConfig = {
+  matches: ["https://*/*"]
+}
 
 export default function Recording() {
   const { recording } = useRecording()
