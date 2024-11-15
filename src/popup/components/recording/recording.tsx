@@ -29,6 +29,7 @@ export default function Recording() {
   const [project, setProject] = useState<Project>()
   const [testsuite, setTestsuite] = useState<Testsuite>()
   const [testcase, setTestcase] = useState<Testcase>()
+  const [testcaseName, setTestcaseName] = useState<string>()
   const [testrunName, setTestrunName] = useState<string>()
 
   useEffect(() => {
@@ -92,10 +93,7 @@ export default function Recording() {
 
     const fetchTestcase = async () => {
       const testcase = await getItem(StorageKey.TESTCASE)
-      const parsedTestcase = JSON.parse(testcase)
-      if (parsedTestcase) {
-        setTestcase(parsedTestcase)
-      }
+      setTestcaseName(testcase)
     }
 
     const fetchTestrunName = async () => {
@@ -150,7 +148,7 @@ export default function Recording() {
         team_slug: team?.slug,
         project_name: project?.name,
         testsuite_name: testsuite?.name,
-        testcase_name: testcase?.name,
+        testcase_name: testcaseName,
         testrun_name: testrunName,
         rrwebSessionKey: uuidv4().replaceAll("-", ""),
         rrwebPageKey: uuidv4().replaceAll("-", ""),

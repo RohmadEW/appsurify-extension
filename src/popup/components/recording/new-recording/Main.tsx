@@ -3,7 +3,6 @@ import { toast } from "react-toastify"
 
 import { ProjectRecording } from "~popup/components/recording/new-recording/Project"
 import { TeamRecording } from "~popup/components/recording/new-recording/Team"
-import { TestcaseRecording } from "~popup/components/recording/new-recording/Testcase"
 import { TestsuiteRecording } from "~popup/components/recording/new-recording/Testsuite"
 import { useRouter } from "~popup/hooks/useRouter"
 import { useStorage } from "~popup/hooks/useStorage"
@@ -23,6 +22,7 @@ export default function CreateNewRecording() {
   const { testsuite } = useAppSelector((state) => state.testsuite)
   const { testcase } = useAppSelector((state) => state.testcase)
 
+  const [testcaseName, setTestcaseName] = useState<string>("")
   const [testrunName, setTestrunName] = useState<string>("")
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function CreateNewRecording() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    if (!testcase || !testsuite || !project || !team || !testrunName) {
+    if (!testcaseName || !testsuite || !project || !team || !testrunName) {
       alert("Please fill in all the fields")
       return
     }
@@ -54,7 +54,7 @@ export default function CreateNewRecording() {
     await setItem(StorageKey.TEAM, JSON.stringify(team))
     await setItem(StorageKey.PROJECT, JSON.stringify(project))
     await setItem(StorageKey.TESTSUITE, JSON.stringify(testsuite))
-    await setItem(StorageKey.TESTCASE, JSON.stringify(testcase))
+    await setItem(StorageKey.TESTCASE, testcaseName)
     await setItem(StorageKey.TESTRUN, testrunName)
     await setItem(
       StorageKey.RECORDING_STATUS,
@@ -80,8 +80,16 @@ export default function CreateNewRecording() {
           <TeamRecording />
           <ProjectRecording />
           <TestsuiteRecording />
-          <TestcaseRecording />
-          {testcase && (
+          {testsuite && (
+            <input
+              type="text"
+              className="plasmo-input plasmo-input-bordered plasmo-w-full"
+              value={testcaseName}
+              onChange={(e) => setTestcaseName(e.target.value)}
+              placeholder="Testcase Name"
+            />
+          )}
+          {testsuite && (
             <input
               type="text"
               className="plasmo-input plasmo-input-bordered plasmo-w-full"
@@ -94,7 +102,7 @@ export default function CreateNewRecording() {
             type="submit"
             className="plasmo-btn plasmo-btn-primary plasmo-w-full"
             disabled={
-              !testcase || !testsuite || !project || !team || !testrunName
+              !testcaseName || !testsuite || !project || !team || !testrunName
             }>
             Start Recording
           </button>
