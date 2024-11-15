@@ -17,10 +17,11 @@ export default function CreateNewRecording() {
   const { setRouterPage } = useRouter()
   const { setItem } = useStorage()
 
+  const { token } = useAppSelector((state) => state.auth)
+
   const { team } = useAppSelector((state) => state.team)
   const { project } = useAppSelector((state) => state.project)
   const { testsuite } = useAppSelector((state) => state.testsuite)
-  const { testcase } = useAppSelector((state) => state.testcase)
 
   const [testcaseName, setTestcaseName] = useState<string>("")
   const [testrunName, setTestrunName] = useState<string>("")
@@ -56,6 +57,7 @@ export default function CreateNewRecording() {
     await setItem(StorageKey.TESTSUITE, JSON.stringify(testsuite))
     await setItem(StorageKey.TESTCASE, testcaseName)
     await setItem(StorageKey.TESTRUN, testrunName)
+    await setItem(StorageKey.TOKEN_BEARER, token)
     await setItem(
       StorageKey.RECORDING_STATUS,
       MessageChromeAction.START_RECORDING

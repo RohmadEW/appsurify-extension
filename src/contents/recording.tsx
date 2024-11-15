@@ -21,6 +21,13 @@ export default function Recording() {
         recording(false)
       }
     })
+
+    // When tab or popup is closed or refreshed or reload, send a message to background to store the data
+    window.addEventListener("beforeunload", () => {
+      chrome.runtime.sendMessage({
+        action: MessageChromeAction.STORE_RRWEB_DATA
+      })
+    })
   }, [])
 
   return null

@@ -3,7 +3,9 @@ export const LocalStorage = {
   getItem: async (key: string) => (await chrome.storage.local.get(key))[key],
   setItem: async (key: string, val: any) =>
     await chrome.storage.local.set({ [key]: val }),
-  removeItems: async (keys: string) => await chrome.storage.local.remove(keys)
+  removeItem: async (keys: string) => await chrome.storage.local.remove(keys),
+  // Remove all items from storage
+  clear: async () => await chrome.storage.local.clear()
 }
 
 export const useStorage = () => ({ ...LocalStorage })
