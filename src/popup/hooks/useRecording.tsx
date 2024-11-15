@@ -61,7 +61,7 @@ export default function useRecording() {
               saveRrwebData(snapshots)
               snapshots = []
               timeoutSnapshot = null
-            }, 1000)
+            }, 250)
           }
         },
         sampling: {
