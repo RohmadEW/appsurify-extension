@@ -104,6 +104,13 @@ const handleSaveRecording = async () => {
   }
 }
 
+chrome.tabs.onRemoved.addListener(async function (tabId, removeInfo) {
+  const tabIdStorage = await LocalStorage.getItem(StorageKey.TAB_ID)
+  if (Number(tabIdStorage) === Number(tabId)) {
+    handleSaveRecording()
+  }
+})
+
 chrome.runtime.onMessage.addListener(async (message) => {
   switch (message.action) {
     case MessageChromeAction.CLEAR_CONSOLE:
@@ -125,6 +132,8 @@ chrome.runtime.onMessage.addListener(async (message) => {
     default:
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         if (tabs[0]?.id) {
+          LocalStorage.setItem(StorageKey.TAB_ID, tabs[0].id)
+
           chrome.tabs.sendMessage(tabs[0].id, {
             action: message.action
           })
