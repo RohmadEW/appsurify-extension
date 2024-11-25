@@ -16,6 +16,7 @@ export default function Recording() {
   const [thisPageReady, setThisPageReady] = useState<boolean>()
 
   const [recordingStatus, setRecordingStatus] = useState<MessageChromeAction>()
+  const [storingRrwebData, setStoringRrwebData] = useState<boolean>(false)
 
   useEffect(() => {
     chrome.runtime.onMessage.addListener((message) => {
@@ -28,6 +29,10 @@ export default function Recording() {
           if (recordingStatus === MessageChromeAction.START_RECORDING) {
             window.close()
           }
+          break
+
+        case MessageChromeAction.STORING_RRWEB_DATA:
+          setStoringRrwebData(message.value)
           break
 
         default:
@@ -79,15 +84,30 @@ export default function Recording() {
           className={`plasmo-mt-3 plasmo-text-2xl plasmo-font-bold plasmo-px-2 plasmo-py-1 plasmo-rounded-md ${recordingStatus === MessageChromeAction.START_RECORDING ? "plasmo-bg-green-100 plasmo-border plasmo-border-green-300 plasmo-text-green-600" : "plasmo-bg-blue-100 plasmo-border plasmo-border-blue-300 plasmo-text-blue-600"} plasmo-uppercase`}>
           {recordingStatus === MessageChromeAction.START_RECORDING
             ? "Recording"
-            : "Not Recording"}
+            : "Stop Recording"}
         </div>
       </div>
       {recordingStatus === MessageChromeAction.STOP_RECORDING && (
-        <button
-          className="plasmo-btn plasmo-btn-outline plasmo-btn-primary plasmo-w-full plasmo-mt-4"
-          onClick={() => handleRecording(MessageChromeAction.START_RECORDING)}>
-          Start Recording
-        </button>
+        <>
+          {storingRrwebData && (
+            <div className="plasmo-alert plasmo-alert-info plasmo-mt-4 plasmo-flex plasmo-items-center plasmo-gap-2 plasmo-rounded-md">
+              <span className="plasmo-loading plasmo-loading-spinner"></span>
+              <div className="">Storing recording data...</div>
+            </div>
+          )}
+          {!storingRrwebData && (
+            <div className="plasmo-alert plasmo-alert-success plasmo-mt-4 plasmo-rounded-md">
+              Recording data stored successfully
+            </div>
+          )}
+          <button
+            className="plasmo-btn plasmo-btn-outline plasmo-btn-primary plasmo-w-full plasmo-mt-4"
+            onClick={() =>
+              handleRecording(MessageChromeAction.START_RECORDING)
+            }>
+            Start Recording
+          </button>
+        </>
       )}
       {recordingStatus === MessageChromeAction.START_RECORDING && (
         <button

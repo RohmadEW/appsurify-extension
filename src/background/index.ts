@@ -65,6 +65,11 @@ const clearAllDataForSaveRecording = async () => {
 }
 
 const handleSaveRecording = async () => {
+  chrome.runtime.sendMessage({
+    action: MessageChromeAction.STORING_RRWEB_DATA,
+    value: true
+  })
+
   try {
     const token = await getTokenFromStorage()
     const team = await getTeamFromStorage()
@@ -97,9 +102,21 @@ const handleSaveRecording = async () => {
     const data = await result.json()
     console.log(data)
     await clearAllDataForSaveRecording()
+
+    chrome.runtime.sendMessage({
+      action: MessageChromeAction.STORING_RRWEB_DATA,
+      value: false
+    })
+
     return true
   } catch (error) {
     console.error(error)
+
+    chrome.runtime.sendMessage({
+      action: MessageChromeAction.STORING_RRWEB_DATA,
+      value: false
+    })
+
     return false
   }
 }
@@ -126,6 +143,10 @@ chrome.runtime.onMessage.addListener(async (message) => {
       break
 
     case MessageChromeAction.STORE_RRWEB_DATA:
+      handleSaveRecording()
+      break
+
+    case MessageChromeAction.STOP_RECORDING:
       handleSaveRecording()
       break
 
