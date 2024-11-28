@@ -42,7 +42,6 @@
     ],
     "permissions": [
       "scripting",
-      "tabs",
       "activeTab",
       "storage",
       "downloads"
