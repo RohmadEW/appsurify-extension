@@ -15,7 +15,7 @@ import { ROUTE_PAGE } from "~popup/types/route"
 import { StorageKey } from "~types/storage"
 
 export const useInit = () => {
-  const { setItem } = useStorage()
+  const { setItem, getItem } = useStorage()
   const [prepare, setPrepare] = useState(true)
 
   const { isAuthenticated, token } = useAppSelector((state) => state.auth)
@@ -23,6 +23,21 @@ export const useInit = () => {
 
   const [cookie] = useCookies([AUTH_COOKIES])
   const { routerPage, setRouterPage } = useRouter()
+
+  const [overrideRouterPage, setOverrideRouterPage] = useState<ROUTE_PAGE>()
+
+  useEffect(() => {
+    const handleOverrideRouterPage = async () => {
+      const override = await getItem(StorageKey.OVERRIDE_ROUTER_PAGE)
+
+      if (override) {
+        setRouterPage(override)
+        setOverrideRouterPage(override)
+      }
+    }
+
+    handleOverrideRouterPage()
+  }, [])
 
   useEffect(() => {
     console.log("useInit routerPage:", ` ${routerPage}`)
@@ -35,7 +50,7 @@ export const useInit = () => {
           routerPage === ROUTE_PAGE.LOGIN ||
           routerPage === ROUTE_PAGE.REGISTER
         ) {
-          setRouterPage(ROUTE_PAGE.HOME)
+          setRouterPage(overrideRouterPage ?? ROUTE_PAGE.HOME)
         }
 
         setClientToken(apiClient, token)

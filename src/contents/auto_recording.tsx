@@ -1,9 +1,10 @@
 import type { PlasmoCSConfig } from "plasmo"
 import { useEffect } from "react"
 
-import useRecording from "~popup/hooks/useRecording"
-import { useStorage } from "~popup/hooks/useStorage"
+import { useRouter } from "~popup/hooks/useRouter"
+import { LocalStorage, useStorage } from "~popup/hooks/useStorage"
 import type { Project } from "~popup/types/project"
+import { ROUTE_PAGE } from "~popup/types/route"
 import type { Team } from "~popup/types/team"
 import type { Testsuite } from "~popup/types/testsuite"
 import { MessageChromeAction } from "~types/message-chrome"
@@ -20,8 +21,7 @@ export const config: PlasmoCSConfig = {
  */
 export default function Recording() {
   const { setItem } = useStorage()
-
-  const { recording } = useRecording()
+  const { setRouterPage } = useRouter()
 
   const queryParams = new URLSearchParams(window.location.search)
   const team = queryParams.get("team")
@@ -31,6 +31,8 @@ export default function Recording() {
   const testrun = queryParams.get("testrun")
   const api = queryParams.get("api")
   const user = queryParams.get("user")
+  const canStartRecording =
+    team && project && testsuite && testcase && testrun && api && user
 
   const handleDefineLocalStorage = async () => {
     await setItem(
@@ -52,6 +54,7 @@ export default function Recording() {
       MessageChromeAction.START_RECORDING
     )
     await setItem(StorageKey.RRWEB_DATA, JSON.stringify([]))
+    await setItem(StorageKey.OVERRIDE_ROUTER_PAGE, ROUTE_PAGE.RECORDING)
   }
 
   useEffect(() => {
@@ -65,8 +68,17 @@ export default function Recording() {
   }, [])
 
   window.addEventListener("load", async () => {
-    await handleDefineLocalStorage()
-    chrome.runtime.sendMessage({ action: MessageChromeAction.START_RECORDING })
+    if (canStartRecording) {
+      await handleDefineLocalStorage()
+
+      chrome.runtime.sendMessage({
+        action: MessageChromeAction.START_RECORDING
+      })
+    }
+  })
+
+  window.addEventListener("beforeunload", async () => {
+    await LocalStorage.removeItem(StorageKey.OVERRIDE_ROUTER_PAGE)
   })
 
   return null

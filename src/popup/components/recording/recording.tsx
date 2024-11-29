@@ -11,7 +11,7 @@ import icon from "/assets/icon.png"
 
 export default function Recording() {
   const { setRouterPage } = useRouter()
-  const { getItem, setItem } = useStorage()
+  const { getItem, removeItem } = useStorage()
 
   const [thisPageReady, setThisPageReady] = useState<boolean>()
 
@@ -66,7 +66,8 @@ export default function Recording() {
     chrome.runtime.sendMessage({ action })
   }
 
-  const handleBack = () => {
+  const handleBack = async () => {
+    await removeItem(StorageKey.OVERRIDE_ROUTER_PAGE)
     setRouterPage(ROUTE_PAGE.CREATE_NEW_RECORDING)
   }
 
