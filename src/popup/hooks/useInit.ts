@@ -7,12 +7,15 @@ import {
   setClientToken
 } from "~popup/api/api-client"
 import { useRouter } from "~popup/hooks/useRouter"
+import { useStorage } from "~popup/hooks/useStorage"
 import { useAppDispatch, useAppSelector } from "~popup/hooks/useStore"
 import { login, logout } from "~popup/store/authSlice"
 import { AUTH_COOKIES, type JWT } from "~popup/types/auth"
 import { ROUTE_PAGE } from "~popup/types/route"
+import { StorageKey } from "~types/storage"
 
 export const useInit = () => {
+  const { setItem } = useStorage()
   const [prepare, setPrepare] = useState(true)
 
   const { isAuthenticated, token } = useAppSelector((state) => state.auth)
@@ -36,6 +39,7 @@ export const useInit = () => {
         }
 
         setClientToken(apiClient, token)
+        setItem(StorageKey.TOKEN_BEARER, token)
       } else {
         setRouterPage(ROUTE_PAGE.LOGIN)
 

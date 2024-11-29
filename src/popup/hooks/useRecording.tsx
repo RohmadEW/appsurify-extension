@@ -38,6 +38,8 @@ export default function useRecording() {
     let timeoutSnapshot: NodeJS.Timeout | null = null
 
     if (run) {
+      console.log("Start recording")
+
       setRouterPage(ROUTE_PAGE.RECORDING)
 
       rrwebRef.current = rrweb.record({
@@ -72,6 +74,8 @@ export default function useRecording() {
         }
       })
     } else {
+      console.log("Stop recording")
+
       rrwebRef.current?.()
     }
   }

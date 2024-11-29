@@ -54,14 +54,8 @@ const getRrwebDataFromStorage = async () => {
   return rrwebDataParsed || []
 }
 
-const clearAllDataForSaveRecording = async () => {
-  await LocalStorage.removeItem(StorageKey.TOKEN_BEARER)
-  await LocalStorage.removeItem(StorageKey.TEAM)
-  await LocalStorage.removeItem(StorageKey.PROJECT)
-  await LocalStorage.removeItem(StorageKey.TESTSUITE)
-  await LocalStorage.removeItem(StorageKey.TESTCASE)
-  await LocalStorage.removeItem(StorageKey.TESTRUN)
-  await LocalStorage.removeItem(StorageKey.RRWEB_DATA)
+const resetRrwebEvents = async () => {
+  await LocalStorage.setItem(StorageKey.RRWEB_DATA, JSON.stringify([]))
 }
 
 const handleSaveRecording = async () => {
@@ -101,7 +95,7 @@ const handleSaveRecording = async () => {
     )
     const data = await result.json()
     console.log(data)
-    await clearAllDataForSaveRecording()
+    await resetRrwebEvents()
 
     chrome.runtime.sendMessage({
       action: MessageChromeAction.STORING_RRWEB_DATA,
@@ -148,6 +142,11 @@ chrome.runtime.onMessage.addListener(async (message) => {
 
     case MessageChromeAction.STOP_RECORDING:
       handleSaveRecording()
+
+      await LocalStorage.setItem(
+        StorageKey.RECORDING_STATUS,
+        MessageChromeAction.STOP_RECORDING
+      )
       break
 
     default:

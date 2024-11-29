@@ -11,7 +11,7 @@ import icon from "/assets/icon.png"
 
 export default function Recording() {
   const { setRouterPage } = useRouter()
-  const { getItem } = useStorage()
+  const { getItem, setItem } = useStorage()
 
   const [thisPageReady, setThisPageReady] = useState<boolean>()
 
@@ -60,7 +60,7 @@ export default function Recording() {
     }
   }, [thisPageReady])
 
-  const handleRecording = (action: MessageChromeAction) => {
+  const handleRecording = async (action: MessageChromeAction) => {
     setRecordingStatus(action)
 
     chrome.runtime.sendMessage({ action })
@@ -83,8 +83,8 @@ export default function Recording() {
         <div
           className={`plasmo-mt-3 plasmo-text-2xl plasmo-font-bold plasmo-px-2 plasmo-py-1 plasmo-rounded-md ${recordingStatus === MessageChromeAction.START_RECORDING ? "plasmo-bg-green-100 plasmo-border plasmo-border-green-300 plasmo-text-green-600" : "plasmo-bg-blue-100 plasmo-border plasmo-border-blue-300 plasmo-text-blue-600"} plasmo-uppercase`}>
           {recordingStatus === MessageChromeAction.START_RECORDING
-            ? "Recording"
-            : "Stop Recording"}
+            ? "Recording..."
+            : "Recording Stopped"}
         </div>
       </div>
       {recordingStatus === MessageChromeAction.STOP_RECORDING && (
@@ -102,6 +102,7 @@ export default function Recording() {
           )}
           <button
             className="plasmo-btn plasmo-btn-outline plasmo-btn-primary plasmo-w-full plasmo-mt-4"
+            disabled={storingRrwebData}
             onClick={() =>
               handleRecording(MessageChromeAction.START_RECORDING)
             }>
@@ -118,6 +119,7 @@ export default function Recording() {
       )}
       <button
         className="plasmo-btn plasmo-btn-outline plasmo-w-full plasmo-mt-8"
+        disabled={storingRrwebData}
         onClick={handleBack}>
         Back
       </button>
