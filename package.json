@@ -43,8 +43,7 @@
     "permissions": [
       "scripting",
       "activeTab",
-      "storage",
-      "downloads"
+      "storage"
     ]
   }
 }
