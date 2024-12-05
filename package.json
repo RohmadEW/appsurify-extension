@@ -41,7 +41,6 @@
       "https://*/*"
     ],
     "permissions": [
-      "scripting",
       "activeTab",
       "storage"
     ]
