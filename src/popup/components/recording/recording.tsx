@@ -18,27 +18,40 @@ export default function Recording() {
   const [recordingStatus, setRecordingStatus] = useState<MessageChromeAction>()
   const [storingRrwebData, setStoringRrwebData] = useState<boolean>(false)
 
-  useEffect(() => {
-    chrome.runtime.onMessage.addListener((message) => {
-      switch (message.action) {
-        case MessageChromeAction.NO_ACTIVE_TAB:
-          toast("No active tab found")
-          break
+  const handleChromeMessageListener = (message) => {
+    switch (message.action) {
+      case MessageChromeAction.NO_ACTIVE_TAB:
+        toast(
+          "No active tab found. Please open a tab to start recording or reload the current page."
+        )
+        break
 
-        case MessageChromeAction.HAS_ACTIVE_TAB:
-          if (recordingStatus === MessageChromeAction.START_RECORDING) {
-            window.close()
+      case MessageChromeAction.HAS_ACTIVE_TAB:
+        if (recordingStatus === MessageChromeAction.START_RECORDING) {
+          window.close()
+        }
+        break
+
+      case MessageChromeAction.STORING_RRWEB_DATA:
+        setStoringRrwebData(message.value)
+        console.log(message)
+        if (message.value === false) {
+          if (message.success) {
+            toast.success(message.message)
+          } else {
+            toast.error(message.message)
           }
-          break
+        }
+        break
 
-        case MessageChromeAction.STORING_RRWEB_DATA:
-          setStoringRrwebData(message.value)
-          break
+      default:
+        break
+    }
+  }
 
-        default:
-          break
-      }
-    })
+  useEffect(() => {
+    chrome.runtime.onMessage.removeListener(handleChromeMessageListener)
+    chrome.runtime.onMessage.addListener(handleChromeMessageListener)
 
     const fetchRecordingStatus = async () => {
       const status = await getItem(StorageKey.RECORDING_STATUS)
@@ -94,11 +107,6 @@ export default function Recording() {
             <div className="plasmo-alert plasmo-alert-info plasmo-mt-4 plasmo-flex plasmo-items-center plasmo-gap-2 plasmo-rounded-md">
               <span className="plasmo-loading plasmo-loading-spinner"></span>
               <div className="">Storing recording data...</div>
-            </div>
-          )}
-          {!storingRrwebData && (
-            <div className="plasmo-alert plasmo-alert-success plasmo-mt-4 plasmo-rounded-md">
-              Recording data stored successfully
             </div>
           )}
           <button

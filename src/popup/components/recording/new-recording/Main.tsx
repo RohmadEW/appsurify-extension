@@ -24,7 +24,9 @@ export default function CreateNewRecording() {
   const { testsuite } = useAppSelector((state) => state.testsuite)
 
   const [testcaseName, setTestcaseName] = useState<string>("")
-  const [testrunName, setTestrunName] = useState<string>("")
+  const [testrunName, setTestrunName] = useState<string>(
+    new Date().toLocaleDateString()
+  )
 
   useEffect(() => {
     chrome.runtime.onMessage.addListener((message) => {
@@ -47,8 +49,8 @@ export default function CreateNewRecording() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    if (!testcaseName || !testsuite || !project || !team || !testrunName) {
-      alert("Please fill in all the fields")
+    if (!testsuite || !project || !team || !testrunName) {
+      toast("Please fill in all the fields")
       return
     }
 
@@ -103,9 +105,7 @@ export default function CreateNewRecording() {
           <button
             type="submit"
             className="plasmo-btn plasmo-btn-primary plasmo-w-full"
-            disabled={
-              !testcaseName || !testsuite || !project || !team || !testrunName
-            }>
+            disabled={!testsuite || !project || !team || !testrunName}>
             Start Recording
           </button>
           <button

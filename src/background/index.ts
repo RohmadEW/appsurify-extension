@@ -93,22 +93,38 @@ const handleSaveRecording = async () => {
         }
       }
     )
+
     const data = await result.json()
     console.log(data)
+
+    if (result.status !== 200) {
+      const errorMessage = Object.keys(data).reduce((acc, key) => {
+        const value = data[key]
+        return `${acc}${key}: ${value.join(", ")}\n`
+      }, "")
+      throw new Error(errorMessage)
+    }
+
     await resetRrwebEvents()
+
+    console.log("Recording data stored successfully")
 
     chrome.runtime.sendMessage({
       action: MessageChromeAction.STORING_RRWEB_DATA,
-      value: false
+      value: false,
+      success: true,
+      message: "Recording data stored successfully"
     })
 
     return true
   } catch (error) {
-    console.error(error)
+    console.log(error.message)
 
     chrome.runtime.sendMessage({
       action: MessageChromeAction.STORING_RRWEB_DATA,
-      value: false
+      value: false,
+      success: false,
+      message: error.message
     })
 
     return false
