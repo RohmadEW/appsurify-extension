@@ -6,9 +6,9 @@ import { useCustomCookies } from "~popup/hooks/useCustomCookies"
 import { changeTeam } from "~popup/store/teamSlice"
 
 import { useAppDispatch } from "../../hooks/useStore"
-import ListTestCase from "./List"
+import ProjectList from "./List"
 
-export default function TestCaseMain() {
+export default function ProjectMain() {
   const { teamId } = useCustomCookies()
   const dispatch = useAppDispatch()
 
@@ -24,7 +24,7 @@ export default function TestCaseMain() {
   }, [team])
 
   if (team) {
-    return <ListTestCase />
+    return <ProjectList />
   }
 
   return <LoadingProject />

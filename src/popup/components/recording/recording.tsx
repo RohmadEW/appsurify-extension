@@ -34,7 +34,6 @@ export default function Recording() {
 
       case MessageChromeAction.STORING_RRWEB_DATA:
         setStoringRrwebData(message.value)
-        console.log(message)
         if (message.value === false) {
           if (message.success) {
             toast.success(message.message)

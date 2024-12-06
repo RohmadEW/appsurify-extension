@@ -1,3 +1,5 @@
+import { useEffect } from "react"
+
 import { Logout } from "~popup/components/logout"
 import ProjectMain from "~popup/components/project/Main"
 import TeamMain from "~popup/components/team/Main"
@@ -14,11 +16,18 @@ import { ROUTE_PAGE } from "~popup/types/route"
 import icon from "/assets/icon.png"
 
 export default function Home() {
+  const { setTeamId } = useCustomCookies()
   const { setRouterPage } = useRouter()
   const { team } = useAppSelector((state) => state.team)
   const dispatch = useAppDispatch()
   const { removeTeamId, removeProjectId, removeTestsuiteId, removeTestcaseId } =
     useCustomCookies()
+
+  useEffect(() => {
+    if (team) {
+      setTeamId(team.id)
+    }
+  }, [])
 
   const handleNewRecording = () => {
     dispatch(resetTeam())
