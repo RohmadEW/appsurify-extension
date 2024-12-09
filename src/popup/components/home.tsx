@@ -1,8 +1,6 @@
 import { useEffect } from "react"
 
 import { Logout } from "~popup/components/logout"
-import ProjectMain from "~popup/components/project/Main"
-import TeamMain from "~popup/components/team/Main"
 import { useCustomCookies } from "~popup/hooks/useCustomCookies"
 import { useRouter } from "~popup/hooks/useRouter"
 import { useAppDispatch, useAppSelector } from "~popup/hooks/useStore"
@@ -58,8 +56,6 @@ export default function Home() {
         onClick={handleNewRecording}>
         Start new recording
       </button>
-      <TeamMain />
-      {team && <ProjectMain />}
       <Logout />
     </div>
   )
