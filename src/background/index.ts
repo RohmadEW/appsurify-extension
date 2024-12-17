@@ -98,10 +98,17 @@ const handleSaveRecording = async () => {
     console.log(data)
 
     if (result.status !== 200) {
-      const errorMessage = Object.keys(data).reduce((acc, key) => {
-        const value = data[key]
-        return `${acc}${key}: ${value.join(", ")}\n`
-      }, "")
+      let errorMessage = ""
+
+      if (result.status === 401) {
+        errorMessage = "Unauthorized"
+      } else {
+        errorMessage = Object.keys(data).reduce((acc, key) => {
+          const value = data[key]
+          return `${acc}${key}: ${value.join(", ")}\n`
+        }, "")
+      }
+
       throw new Error(errorMessage)
     }
 

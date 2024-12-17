@@ -18,6 +18,20 @@ export default function Recording() {
   const [recordingStatus, setRecordingStatus] = useState<MessageChromeAction>()
   const [storingRrwebData, setStoringRrwebData] = useState<boolean>(false)
 
+  const throwToLoginPage = async () => {
+    await removeItem(StorageKey.TOKEN_BEARER)
+    await removeItem(StorageKey.TEAM)
+    await removeItem(StorageKey.PROJECT)
+    await removeItem(StorageKey.TESTSUITE)
+    await removeItem(StorageKey.TESTCASE)
+    await removeItem(StorageKey.TESTRUN)
+    await removeItem(StorageKey.RRWEB_DATA)
+    await removeItem(StorageKey.RECORDING_STATUS)
+    await removeItem(StorageKey.OVERRIDE_ROUTER_PAGE)
+
+    setRouterPage(ROUTE_PAGE.LOGIN)
+  }
+
   const handleChromeMessageListener = async (message) => {
     switch (message.action) {
       case MessageChromeAction.NO_ACTIVE_TAB:
@@ -47,6 +61,10 @@ export default function Recording() {
             toast.success(message.message)
           } else {
             toast.error(message.message)
+
+            if (message.message === "Unauthorized") {
+              throwToLoginPage()
+            }
           }
         }
         break
