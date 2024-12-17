@@ -175,11 +175,13 @@ chrome.runtime.onMessage.addListener(async (message) => {
           })
           // Send to popup for notification
           chrome.runtime.sendMessage({
-            action: MessageChromeAction.HAS_ACTIVE_TAB
+            action: MessageChromeAction.HAS_ACTIVE_TAB,
+            recordingStatus: message.action
           })
         } else {
           chrome.runtime.sendMessage({
-            action: MessageChromeAction.NO_ACTIVE_TAB
+            action: MessageChromeAction.NO_ACTIVE_TAB,
+            recordingStatus: message.action
           })
         }
       })

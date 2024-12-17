@@ -18,21 +18,29 @@ export default function Recording() {
   const [recordingStatus, setRecordingStatus] = useState<MessageChromeAction>()
   const [storingRrwebData, setStoringRrwebData] = useState<boolean>(false)
 
-  const handleChromeMessageListener = (message) => {
+  const handleChromeMessageListener = async (message) => {
     switch (message.action) {
       case MessageChromeAction.NO_ACTIVE_TAB:
+        setRecordingStatus(MessageChromeAction.STOP_RECORDING)
+
         toast(
           "No active tab found. Please open a tab to start recording or reload the current page."
         )
         break
 
       case MessageChromeAction.HAS_ACTIVE_TAB:
-        if (recordingStatus === MessageChromeAction.START_RECORDING) {
+        if (message.recordingStatus === MessageChromeAction.START_RECORDING) {
+          setRecordingStatus(MessageChromeAction.START_RECORDING)
+
           window.close()
+        } else {
+          setRecordingStatus(MessageChromeAction.STOP_RECORDING)
         }
         break
 
       case MessageChromeAction.STORING_RRWEB_DATA:
+        setRecordingStatus(MessageChromeAction.STOP_RECORDING)
+
         setStoringRrwebData(message.value)
         if (message.value === false) {
           if (message.success) {
@@ -67,17 +75,21 @@ export default function Recording() {
   }, [])
 
   useEffect(() => {
+    const changeRecordingStatus = async () => {
+      await setItem(StorageKey.RECORDING_STATUS, recordingStatus)
+    }
+
+    changeRecordingStatus()
+  }, [recordingStatus])
+
+  useEffect(() => {
     if (thisPageReady === false) {
       setRouterPage(ROUTE_PAGE.CREATE_NEW_RECORDING)
     }
   }, [thisPageReady])
 
   const handleRecording = async (action: MessageChromeAction) => {
-    setRecordingStatus(action)
-
     chrome.runtime.sendMessage({ action })
-
-    await setItem(StorageKey.RECORDING_STATUS, action)
   }
 
   const handleBack = async () => {
