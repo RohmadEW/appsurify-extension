@@ -11,7 +11,7 @@ import icon from "/assets/icon.png"
 
 export default function Recording() {
   const { setRouterPage } = useRouter()
-  const { getItem, removeItem } = useStorage()
+  const { getItem, removeItem, setItem } = useStorage()
 
   const [thisPageReady, setThisPageReady] = useState<boolean>()
 
@@ -76,6 +76,8 @@ export default function Recording() {
     setRecordingStatus(action)
 
     chrome.runtime.sendMessage({ action })
+
+    await setItem(StorageKey.RECORDING_STATUS, action)
   }
 
   const handleBack = async () => {
