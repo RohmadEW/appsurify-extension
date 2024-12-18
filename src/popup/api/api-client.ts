@@ -1,5 +1,8 @@
 import axios, { isAxiosError, type AxiosInstance } from "axios"
 
+import { LocalStorage } from "~popup/hooks/useStorage"
+import { StorageKey } from "~types/storage"
+
 import { API_URL } from "../../libs/constants"
 
 interface ApiClientOptions {
@@ -29,15 +32,15 @@ const ApiClient = (options: ApiClientOptions): AxiosInstance => {
     async (error) => {
       // if unauthorized auto logout
       if (403 === error?.response?.status || 401 === error?.response?.status) {
-        // Remove all cookies when the path url doesn't contains /teams/api/teams/
-        // const urlRequest = error.config.url;
-        // if (!urlRequest.includes("/teams/api/teams/")) {
-        document.cookie =
-          "auth=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
-
-        window.location.href = "/"
-        // console.warn("Unauthorized, redirecting to login page");
-        // }
+        await LocalStorage.removeItem(StorageKey.TOKEN_BEARER)
+        await LocalStorage.removeItem(StorageKey.TEAM)
+        await LocalStorage.removeItem(StorageKey.PROJECT)
+        await LocalStorage.removeItem(StorageKey.TESTSUITE)
+        await LocalStorage.removeItem(StorageKey.TESTCASE)
+        await LocalStorage.removeItem(StorageKey.TESTRUN)
+        await LocalStorage.removeItem(StorageKey.RRWEB_DATA)
+        await LocalStorage.removeItem(StorageKey.RECORDING_STATUS)
+        await LocalStorage.removeItem(StorageKey.OVERRIDE_ROUTER_PAGE)
 
         throw error
       }
