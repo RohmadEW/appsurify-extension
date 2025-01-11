@@ -13,7 +13,7 @@ export interface PostLoginArgs {
 
 export const postLogin = async (args: PostLoginArgs) => {
   const response = await apiClient.post<PostLoginResponse>(
-    "/api/auth/login/",
+    "/api/auth/login",
     args
   )
 
