@@ -11,7 +11,7 @@ interface Args {
 
 export const getProject = async ({ pagination, team }: Args) => {
   const response = await apiClient.get<PaginatedResponse<Project>>(
-    `/a/${team.slug}/testmap/api/projects/`,
+    `/a/${team.slug}/testmap/api/projects`,
     {
       params: {
         page: pagination.page

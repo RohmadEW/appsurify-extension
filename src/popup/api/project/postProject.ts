@@ -10,7 +10,7 @@ interface Args {
 
 export const postProject = async ({ team, name }: Args) => {
   const response = await apiClient.post<Response<Project>>(
-    `/a/${team.slug}/testmap/api/projects/`,
+    `/a/${team.slug}/testmap/api/projects`,
     {
       name
     }

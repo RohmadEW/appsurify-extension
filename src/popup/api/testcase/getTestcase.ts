@@ -20,7 +20,7 @@ export const getTestcase = async ({
   testsuite
 }: Args) => {
   const response = await apiClient.get<PaginatedResponse<Testcase>>(
-    `/a/${team.slug}/testmap/api/projects/${project.id}/testsuites/${testsuite.id}/testcases/`,
+    `/a/${team.slug}/testmap/api/projects/${project.id}/testsuites/${testsuite.id}/testcases`,
     {
       params: {
         page: pagination.page

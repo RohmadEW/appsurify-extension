@@ -6,7 +6,7 @@ export interface GetTeamById {
 }
 
 export const getTeamById = async ({ id }: GetTeamById) => {
-  const response = await apiClient.get<Team>(`/teams/api/teams/${id}/`)
+  const response = await apiClient.get<Team>(`/teams/api/teams/${id}`)
 
   return response.data
 }

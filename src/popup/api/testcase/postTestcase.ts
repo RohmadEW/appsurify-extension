@@ -19,7 +19,7 @@ export const postTestcase = async ({
   testsuite
 }: Args) => {
   const response = await apiClient.post<Response<Testcase>>(
-    `/a/${team.slug}/testmap/api/projects/${project.id}/testsuites/${testsuite.id}/testcases/`,
+    `/a/${team.slug}/testmap/api/projects/${project.id}/testsuites/${testsuite.id}/testcases`,
     {
       name
     }

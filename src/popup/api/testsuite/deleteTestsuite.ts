@@ -10,7 +10,7 @@ interface Args {
 
 export const deleteTestsuite = async ({ team, id, project }: Args) => {
   const response = await apiClient.delete(
-    `/a/${team.slug}/testmap/api/projects/${project.id}/testsuites/${id}/`
+    `/a/${team.slug}/testmap/api/projects/${project.id}/testsuites/${id}`
   )
 
   return response.data

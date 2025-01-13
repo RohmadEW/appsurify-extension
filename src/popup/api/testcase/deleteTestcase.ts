@@ -17,7 +17,7 @@ export const deleteTestcase = async ({
   testsuite
 }: Args) => {
   const response = await apiClient.delete(
-    `/a/${team.slug}/testmap/api/projects/${project.id}/testsuites/${testsuite.id}/testcases/${id}/`
+    `/a/${team.slug}/testmap/api/projects/${project.id}/testsuites/${testsuite.id}/testcases/${id}`
   )
 
   return response.data

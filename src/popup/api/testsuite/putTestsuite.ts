@@ -13,7 +13,7 @@ interface Args {
 
 export const putTestsuite = async ({ team, id, name, project }: Args) => {
   const response = await apiClient.put<Response<Testsuite>>(
-    `/a/${team.slug}/testmap/api/projects/${project.id}/testsuites/${id}/`,
+    `/a/${team.slug}/testmap/api/projects/${project.id}/testsuites/${id}`,
     {
       name
     }

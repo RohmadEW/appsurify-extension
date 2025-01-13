@@ -18,7 +18,7 @@ export const getTestcaseById = async ({
   id
 }: Args) => {
   const response = await apiClient.get<Testcase>(
-    `/a/${team.slug}/testmap/api/projects/${project.id}/testsuites/${testsuite.id}/testcases/${id}/`
+    `/a/${team.slug}/testmap/api/projects/${project.id}/testsuites/${testsuite.id}/testcases/${id}`
   )
 
   return response.data

@@ -11,7 +11,7 @@ interface Args {
 
 export const getTestsuiteById = async ({ team, project, id }: Args) => {
   const response = await apiClient.get<Testsuite>(
-    `/a/${team.slug}/testmap/api/projects/${project.id}/testsuites/${id}/`
+    `/a/${team.slug}/testmap/api/projects/${project.id}/testsuites/${id}`
   )
 
   return response.data

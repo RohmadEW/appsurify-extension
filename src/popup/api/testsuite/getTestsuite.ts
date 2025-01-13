@@ -13,7 +13,7 @@ interface Args {
 
 export const getTestsuite = async ({ pagination, team, project }: Args) => {
   const response = await apiClient.get<PaginatedResponse<Testsuite>>(
-    `/a/${team.slug}/testmap/api/projects/${project.id}/testsuites/`,
+    `/a/${team.slug}/testmap/api/projects/${project.id}/testsuites`,
     {
       params: {
         page: pagination.page

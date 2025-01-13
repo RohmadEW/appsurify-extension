@@ -4,7 +4,7 @@ import { apiClient } from "../api-client"
 
 export const getTeam = async () => {
   const response =
-    await apiClient.get<PaginatedResponse<Team>>("/teams/api/teams/")
+    await apiClient.get<PaginatedResponse<Team>>("/teams/api/teams")
 
   return response.data
 }
