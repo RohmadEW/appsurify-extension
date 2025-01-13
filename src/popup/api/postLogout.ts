@@ -1,7 +1,7 @@
-import { apiClient } from "./api-client";
+import { apiClient } from "./api-client"
 
 export const postLogout = async () => {
-  const response = await apiClient.post<string>("/api/auth/logout/");
+  const response = await apiClient.post<string>("/api/auth/logout")
 
-  return response.data;
-};
+  return response.data
+}
