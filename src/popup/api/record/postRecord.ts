@@ -8,9 +8,9 @@ export interface PostRecordArgs {
   testsuite_name: string
   testcase_name: string
   testrun_name: string
-  rrwebSessionKey: string
-  rrwebPageKey: string
-  rrwebEvents: eventWithTime[]
+  session_key: string
+  page_key: string
+  session_events: eventWithTime[]
 }
 
 export const postRecord = async (args: PostRecordArgs) => {

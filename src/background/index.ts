@@ -83,9 +83,9 @@ const handleSaveRecording = async () => {
           testsuite_name: testsuite?.name,
           testcase_name: testcase,
           testrun_name: testrun,
-          rrwebSessionKey: uuidv4().replace(/-/g, ""),
-          rrwebPageKey: uuidv4().replace(/-/g, ""),
-          rrwebEvents: rrwebData
+          session_key: uuidv4().replace(/-/g, ""),
+          page_key: uuidv4().replace(/-/g, ""),
+          session_events: rrwebData
         } as PostRecordArgs),
         headers: {
           "Content-type": "application/json; charset=UTF-8",
