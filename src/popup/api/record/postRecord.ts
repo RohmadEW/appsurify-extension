@@ -15,7 +15,7 @@ export interface PostRecordArgs {
 
 export const postRecord = async (args: PostRecordArgs) => {
   const response = await apiClient.post<string>(
-    `/a/${args.team_slug}/testmap/api/record/events`,
+    `/a/${args.team_slug}/testmap/api/rrweb/record/session`,
     args
   )
 
