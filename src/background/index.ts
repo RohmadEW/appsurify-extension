@@ -74,7 +74,7 @@ const handleSaveRecording = async () => {
     const rrwebData = await getRrwebDataFromStorage()
 
     const result = await fetch(
-      `${API_URL}/a/${team?.slug}/testmap/api/record/events`,
+      `${API_URL}/a/${team?.slug}/testmap/api/rrweb/record/session`,
       {
         method: "POST",
         body: JSON.stringify({
@@ -97,7 +97,7 @@ const handleSaveRecording = async () => {
     const data = await result.json()
     console.log(data)
 
-    if (result.status !== 200) {
+    if (result.status !== 200 && result.status !== 201) {
       let errorMessage = ""
 
       if (result.status === 401) {
